@@ -10,7 +10,7 @@
 
           <!-- navigation -->
           <ul class="nav-links d-none d-md-flex">
-            <li v-for="(link, index) in links" :key="index">
+            <li v-for="(link, index) in homeLinks" :key="index">
               <a :href="link.to" class="white--text">{{ link.label }}</a>
             </li>
           </ul>
@@ -26,56 +26,21 @@
           </v-btn>
         </div>
 
-        <v-app-bar-nav-icon @click="drawer = true" class="d-flex d-md-none" />
+        <v-app-bar-nav-icon
+          @click="drawerOpen = true"
+          class="d-flex d-md-none"
+        />
       </div>
     </v-app-bar>
 
-    <!-- mobile menu -->
-    <v-navigation-drawer v-model="drawer" app left temporary>
-      <v-list nav dense>
-        <v-list-item-group
-          v-model="drawer"
-          active-class="secondary--text text--accent-4"
-        >
-          <!-- sign btns -->
-          <v-list-item class="mb-4">
-            <v-btn color="secondary">
-              <v-icon left>mdi-account-plus-outline</v-icon>Sing-up
-            </v-btn>
-            <v-btn plain class="ml-1">
-              <v-icon>mdi-account-lock-open-outline</v-icon>Sing-in
-            </v-btn>
-          </v-list-item>
-
-          <v-divider />
-
-          <!-- navigation -->
-          <a
-            v-for="(link, index) in links"
-            :key="index"
-            :href="link.to"
-            class="drawer-link"
-          >
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>{{ link.icon }}</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ link.label }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </a>
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
+    <NavigationDrawer :homeLinks="homeLinks" :drawerOpen.sync="drawerOpen" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Logo from "./Logo.component.vue";
+import NavigationDrawer from "./NavigationDrawer.component.vue";
 
 interface NavigationLink {
   to: string;
@@ -84,12 +49,15 @@ interface NavigationLink {
 }
 
 @Component({
-  components: { Logo },
+  components: {
+    Logo,
+    NavigationDrawer,
+  },
 })
 export default class Navbar extends Vue {
-  drawer = false;
+  drawerOpen = false;
 
-  links = [
+  homeLinks = [
     {
       to: "/#start",
       label: "Home",
@@ -107,6 +75,8 @@ export default class Navbar extends Vue {
     },
   ] as NavigationLink[];
 }
+
+export { NavigationLink };
 </script>
 
 <style scoped>
@@ -120,8 +90,7 @@ export default class Navbar extends Vue {
   list-style-type: none;
 }
 
-.nav-links li a,
-.drawer-link {
+.nav-links li a {
   text-decoration: none;
 }
 
