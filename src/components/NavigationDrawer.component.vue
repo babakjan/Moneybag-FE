@@ -41,32 +41,22 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from "vue";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { NavigationLink } from "./Navbar.component.vue";
 
-export default Vue.extend({
-  name: "NavigationDrawer",
-  props: {
-    homeLinks: {
-      type: Array as PropType<NavigationLink[]>,
-      default: () => [],
-    },
-    drawerOpen: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    drawerOpenLocal: {
-      get(): boolean {
-        return this.drawerOpen;
-      },
-      set(value: boolean) {
-        this.$emit("update:drawerOpen", value);
-      },
-    },
+@Component
+export default class NavigationDrawer extends Vue {
+  @Prop() drawerOpen = false;
+  @Prop() homeLinks: NavigationLink[] | undefined;
+
+  get drawerOpenLocal(): boolean {
+    return this.drawerOpen;
   }
-});
+
+  set drawerOpenLocal(value: boolean) {
+    this.$emit("update:drawerOpen", value);
+  }
+}
 </script>
 
 <style scoped>
