@@ -78,21 +78,16 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { NavigationLink } from "./Navbar.component.vue";
-import { mapGetters, mapMutations } from "vuex";
+import { Getter, Mutation } from "vuex-class";
 
-@Component({
-  computed: {
-    ...mapGetters(["loggedIn"]),
-  },
-  methods: {
-    ...mapMutations(["setLoggedIn"]),
-  },
-})
+@Component
 export default class NavigationDrawer extends Vue {
   @Prop() drawerOpen: boolean | undefined;
   @Prop() links: NavigationLink[] | undefined;
 
-  loggedIn!: boolean;
+  @Getter loggedIn: boolean | undefined;
+
+  @Mutation setLoggedIn!: (data: boolean) => void;
 
   get drawerOpenLocal(): boolean {
     return this.drawerOpen || false;
@@ -103,11 +98,11 @@ export default class NavigationDrawer extends Vue {
   }
 
   logIn(): void {
-    this.$store.commit("setLoggedIn", true);
+    this.setLoggedIn(true);
   }
 
   logOut(): void {
-    this.$store.commit("setLoggedIn", false);
+    this.setLoggedIn(false);
   }
 }
 </script>

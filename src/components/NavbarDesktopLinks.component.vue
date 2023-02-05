@@ -38,27 +38,22 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { NavigationLink } from "./Navbar.component.vue";
-import { mapMutations, mapGetters } from "vuex";
+import { Getter, Mutation } from "vuex-class";
 
-@Component({
-  computed: {
-    ...mapGetters(["loggedIn"]),
-  },
-  methods: {
-    ...mapMutations(["setLoggedIn"]),
-  },
-})
+@Component
 export default class NavbarDesktopLinks extends Vue {
   @Prop() links: NavigationLink[] | undefined;
 
-  loggedIn!: boolean; //from vuex
+  @Getter loggedIn: boolean | undefined;
+
+  @Mutation setLoggedIn!: (data: boolean) => void;
 
   logIn(): void {
-    this.$store.commit("setLoggedIn", true);
+    this.setLoggedIn(true);
   }
 
   logOut(): void {
-    this.$store.commit("setLoggedIn", false);
+    this.setLoggedIn(false);
   }
 }
 </script>

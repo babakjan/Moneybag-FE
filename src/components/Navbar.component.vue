@@ -90,10 +90,6 @@ export default class Navbar extends Vue {
     },
   ] as NavigationLink[];
 
-  created(): void {
-    console.log(this.loggedIn);
-  }
-
   //computed
   get links(): NavigationLink[] {
     return this.loggedIn ? this.appLinks : this.homeLinks;
