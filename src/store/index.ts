@@ -3,9 +3,25 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
+class State {
+  loggedIn = false;
+}
+
+const Store = new Vuex.Store<State>({
+  state: new State(),
+  mutations: {
+    setLoggedIn: (state: State, data: boolean): void => {
+      state.loggedIn = data;
+    },
+  },
   actions: {},
+  getters: {
+    loggedIn: (state: State): boolean => {
+      return state.loggedIn;
+    },
+  },
   modules: {},
 });
+
+export default Store;
+export { Store, State };

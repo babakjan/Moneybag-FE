@@ -8,7 +8,7 @@
           <v-toolbar-title>Moneybag</v-toolbar-title>
         </div>
 
-        <NavbarDesktopLinks :homeLinks="homeLinks" />
+        <NavbarDesktopLinks :links="links" />
 
         <v-app-bar-nav-icon
           @click="drawerOpen = true"
@@ -17,7 +17,7 @@
       </div>
     </v-app-bar>
 
-    <NavigationDrawer :homeLinks="homeLinks" :drawerOpen.sync="drawerOpen" />
+    <NavigationDrawer :links="links" :drawerOpen.sync="drawerOpen" />
   </div>
 </template>
 
@@ -26,6 +26,7 @@ import { Component, Vue } from "vue-property-decorator";
 import Logo from "./Logo.component.vue";
 import NavigationDrawer from "./NavigationDrawer.component.vue";
 import NavbarDesktopLinks from "./NavbarDesktopLinks.component.vue";
+import { mapGetters } from "vuex";
 
 interface NavigationLink {
   to: string;
@@ -39,8 +40,13 @@ interface NavigationLink {
     NavigationDrawer,
     NavbarDesktopLinks,
   },
+  computed: {
+    ...mapGetters(["loggedIn"]),
+  },
 })
 export default class Navbar extends Vue {
+  loggedIn!: boolean;
+
   drawerOpen = false;
 
   homeLinks = [
@@ -60,6 +66,38 @@ export default class Navbar extends Vue {
       icon: "mdi-email-outline",
     },
   ] as NavigationLink[];
+
+  appLinks = [
+    {
+      to: "/dashboard",
+      label: "Dashboard",
+      icon: "mdi-view-dashboard-outline",
+    },
+    {
+      to: "/records",
+      label: "Records",
+      icon: "mdi-view-list-outline",
+    },
+    {
+      to: "/analytic",
+      label: "Analytic",
+      icon: "mdi-finance",
+    },
+    {
+      to: "/export",
+      label: "Export",
+      icon: "mdi-export",
+    },
+  ] as NavigationLink[];
+
+  created(): void {
+    console.log(this.loggedIn);
+  }
+
+  //computed
+  get links(): NavigationLink[] {
+    return this.loggedIn ? this.appLinks : this.homeLinks;
+  }
 }
 
 export { NavigationLink };
