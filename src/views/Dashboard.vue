@@ -3,10 +3,15 @@
 </template>
 
 <script lang="ts">
+import AccountApi from "@/api/accountApi";
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {},
 })
-export default class Dashboard extends Vue {}
+export default class Dashboard extends Vue {
+  created(): void {
+    AccountApi.getAllAccounts();
+  }
+}
 </script>
