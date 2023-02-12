@@ -1,5 +1,4 @@
 import axios from "axios";
-import environment from "@/services/environment";
 import {
   AxiosRequestConfig as RequestConfig,
   AxiosResponse as Response,
@@ -15,6 +14,16 @@ class API {
     const requestConfig = {
       url: path,
       method: "GET",
+    } as RequestConfig;
+
+    return this.axiosInstance.request(requestConfig);
+  }
+
+  post(path: string, data: any): Promise<Response> {
+    const requestConfig = {
+      url: path,
+      method: "POST",
+      data: data,
     } as RequestConfig;
 
     return this.axiosInstance.request(requestConfig);

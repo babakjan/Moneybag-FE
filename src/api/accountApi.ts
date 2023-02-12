@@ -11,7 +11,7 @@ const AccountApi = {
   API: new API(),
   DOMAIN: "/accounts",
 
-  getAllAccounts: function (): Promise<Response<Account[]>> {
+  getAllAccounts(): Promise<Response<Account[]>> {
     return this.API.get(this.DOMAIN);
   },
 };

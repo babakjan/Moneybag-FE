@@ -7,21 +7,26 @@
       >
         <!-- sign btns -->
         <v-list-item class="mb-4">
-          <div v-if="loggedIn" class="mt-2">
-            <v-avatar color="primary" size="40">
-              <span class="white--text">JB</span>
-            </v-avatar>
-            <span class="mx-2">Jan Babák</span>
-            <v-btn icon plain router to="/" @click="logOut()">
-              <v-icon>mdi-exit-to-app</v-icon>
+          <div v-if="loggedIn" class="mt-2 d-flex align-start flex-column">
+            <div>
+              <v-avatar color="primary" size="40">
+                <span class="white--text">{{
+                  user.email[0].toLocaleUpperCase()
+                }}</span>
+              </v-avatar>
+              <span class="mx-2">{{ user.email }}</span>
+            </div>
+            <v-btn icon plain router to="/" @click="logOut()" class="ml-8 mt-2">
+              Log-out
+              <v-icon right>mdi-exit-to-app</v-icon>
             </v-btn>
           </div>
 
           <div v-else class="d-flex">
-            <v-btn color="secondary">
+            <v-btn color="secondary" router to="/register">
               <v-icon left>mdi-account-plus-outline</v-icon>Sing-up
             </v-btn>
-            <v-btn plain class="ml-1" @click="logIn()" router to="/dashboard">
+            <v-btn plain class="ml-1" router to="/login">
               <v-icon>mdi-account-lock-open-outline</v-icon>Sing-in
             </v-btn>
           </div>
@@ -79,6 +84,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { NavigationLink } from "./Navbar.component.vue";
 import { Getter, Mutation } from "vuex-class";
+import { User } from "@/store/modules/user";
 
 @Component
 export default class NavigationDrawer extends Vue {
@@ -86,8 +92,10 @@ export default class NavigationDrawer extends Vue {
   @Prop() links: NavigationLink[] | undefined;
 
   @Getter loggedIn: boolean | undefined;
+  @Getter user: User | null | undefined;
 
   @Mutation setLoggedIn!: (data: boolean) => void;
+  @Mutation logOut!: () => void;
 
   get drawerOpenLocal(): boolean {
     return this.drawerOpen || false;
@@ -95,14 +103,6 @@ export default class NavigationDrawer extends Vue {
 
   set drawerOpenLocal(value: boolean) {
     this.$emit("update:drawerOpen", value);
-  }
-
-  logIn(): void {
-    this.setLoggedIn(true);
-  }
-
-  logOut(): void {
-    this.setLoggedIn(false);
   }
 }
 </script>

@@ -16,18 +16,23 @@
 
     <div class="d-none d-md-flex align-center justify-center">
       <!-- account -->
-      <v-btn v-if="loggedIn" plain router to="/" @click="logOut()">
-        <v-icon>mdi-account-outline</v-icon>
-        <span>Jan Babák</span>
-      </v-btn>
+      <div v-if="loggedIn">
+        <v-btn text router to="/user">
+          <v-icon>mdi-account-outline</v-icon>
+          <span v-if="loggedIn">{{ user.email }}</span>
+        </v-btn>
+        <v-btn icon plain router to="/" @click="logOut()">
+          <v-icon>mdi-exit-to-app</v-icon>
+        </v-btn>
+      </div>
 
       <!-- sign btns -->
       <div v-else>
-        <v-btn plain :ripple="false" @click="logIn()" router to="/dashboard">
+        <v-btn plain :ripple="false" router to="/login">
           <v-icon>mdi-account-lock-open-outline</v-icon>Sing-in
         </v-btn>
 
-        <v-btn color="secondary">
+        <v-btn color="secondary" router to="/register">
           <v-icon left>mdi-account-plus-outline</v-icon>Sing-up
         </v-btn>
       </div>
@@ -39,22 +44,17 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { NavigationLink } from "./Navbar.component.vue";
 import { Getter, Mutation } from "vuex-class";
+import { User } from "@/store/modules/user";
 
 @Component
 export default class NavbarDesktopLinks extends Vue {
   @Prop() links: NavigationLink[] | undefined;
 
   @Getter loggedIn: boolean | undefined;
+  @Getter user: User | null | undefined;
 
   @Mutation setLoggedIn!: (data: boolean) => void;
-
-  logIn(): void {
-    this.setLoggedIn(true);
-  }
-
-  logOut(): void {
-    this.setLoggedIn(false);
-  }
+  @Mutation logOut!: () => void;
 }
 </script>
 

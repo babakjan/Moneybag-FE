@@ -1,26 +1,19 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import user from "@/store/modules/user";
 
 Vue.use(Vuex);
 
-class State {
-  loggedIn = false;
-}
+class State {}
 
 const Store = new Vuex.Store<State>({
   state: new State(),
-  mutations: {
-    setLoggedIn: (state: State, data: boolean): void => {
-      state.loggedIn = data;
-    },
-  },
+  mutations: {},
   actions: {},
-  getters: {
-    loggedIn: (state: State): boolean => {
-      return state.loggedIn;
-    },
+  getters: {},
+  modules: {
+    user: user,
   },
-  modules: {},
 });
 
 export default Store;

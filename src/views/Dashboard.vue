@@ -11,7 +11,7 @@ import { Component, Vue } from "vue-property-decorator";
 })
 export default class Dashboard extends Vue {
   created(): void {
-    AccountApi.getAllAccounts();
+    // AccountApi.getAllAccounts();
   }
 }
 </script>
