@@ -64,8 +64,8 @@ import { User } from "@/store/modules/user";
 })
 export default class LogIn extends Vue {
   authenticateForm: AuthenticationRequest = {
-    email: "",
-    password: "",
+    email: "honza@gmail.com",
+    password: "12345678",
   };
 
   formValid = false;
@@ -99,11 +99,10 @@ export default class LogIn extends Vue {
       authenticationApi
         .authenticate(this.authenticateForm)
         .then((response) => {
-          const user = {
+          this.setTokenAndUser({
             token: response.data.token,
-            email: this.authenticateForm.email,
-          } as User;
-          this.setUser(user);
+            user: response.data.user,
+          });
           this.$router.push("/dashboard");
         })
         .catch((error) => {
@@ -114,7 +113,13 @@ export default class LogIn extends Vue {
     }
   }
 
-  @Mutation setUser!: (data: User) => void;
+  @Mutation setTokenAndUser!: ({
+    token,
+    user,
+  }: {
+    token: string;
+    user: User;
+  }) => void;
 }
 </script>
 

@@ -157,11 +157,10 @@ export default class Register extends Vue {
       authenticationApi
         .register(this.registerForm)
         .then((response) => {
-          const user = {
+          this.setTokenAndUser({
             token: response.data.token,
-            email: this.registerForm.email,
-          } as User;
-          this.setUser(user);
+            user: response.data.user,
+          });
           this.$router.push("/dashboard");
         })
         .catch((error) => {
@@ -172,7 +171,13 @@ export default class Register extends Vue {
     }
   }
 
-  @Mutation setUser!: (data: User) => void;
+  @Mutation setTokenAndUser!: ({
+    token,
+    user,
+  }: {
+    token: string;
+    user: User;
+  }) => void;
 }
 </script>
 

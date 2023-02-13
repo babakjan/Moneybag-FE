@@ -1,10 +1,15 @@
 interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
   email: string;
-  token: string;
+  role: string;
+  accountIds: number;
 }
 
 class State {
   user = null as null | User;
+  token = null as string | null;
 }
 
 const user = {
@@ -13,6 +18,13 @@ const user = {
   mutations: {
     setUser: (state: State, data: User): void => {
       state.user = { ...data };
+    },
+    setTokenAndUser: (
+      state: State,
+      { token, user }: { token: string; user: User }
+    ): void => {
+      state.user = user;
+      state.token = token;
     },
     logOut: (state: State): void => {
       state.user = null;
@@ -23,8 +35,10 @@ const user = {
       return state.user;
     },
     loggedIn: (state: State): boolean => {
-      console.log("login geter");
       return state.user != null;
+    },
+    token: (state: State): string | null => {
+      return state.token;
     },
   },
   actions: {},

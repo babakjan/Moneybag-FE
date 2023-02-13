@@ -3,6 +3,12 @@ import {
   AxiosRequestConfig as RequestConfig,
   AxiosResponse as Response,
 } from "axios";
+import store from "@/store";
+
+interface ApiParameter {
+  name: string;
+  value: string | number | boolean;
+}
 
 class API {
   axiosInstance = axios.create({
@@ -10,23 +16,53 @@ class API {
     timeout: 10000,
   });
 
-  get(path: string): Promise<Response> {
+  get(path: string, parameters = [] as ApiParameter[]): Promise<Response> {
     const requestConfig = {
-      url: path,
+      url: this.createUrl(path, parameters),
       method: "GET",
     } as RequestConfig;
+
+    this.createHeaders(requestConfig);
 
     return this.axiosInstance.request(requestConfig);
   }
 
-  post(path: string, data: any): Promise<Response> {
+  post(
+    path: string,
+    data: any,
+    parameters = [] as ApiParameter[]
+  ): Promise<Response> {
     const requestConfig = {
-      url: path,
+      url: this.createUrl(path, parameters),
       method: "POST",
       data: data,
     } as RequestConfig;
 
+    this.createHeaders(requestConfig);
+
     return this.axiosInstance.request(requestConfig);
+  }
+
+  createHeaders(requestConfig: RequestConfig): void {
+    const token = store.getters.token;
+    let requestHeaders = requestConfig.headers;
+    if (!requestHeaders) {
+      requestHeaders = {};
+    }
+    if (token) {
+      requestHeaders["Authorization"] = "Bearer " + token;
+    }
+
+    requestConfig.headers = requestHeaders;
+  }
+
+  createUrl(path: string, parameters = [] as ApiParameter[]): string {
+    let delimiter = "?";
+    for (const parameter of parameters) {
+      path = path + delimiter + parameter.name + "=" + parameter.value;
+      delimiter = "&";
+    }
+    return path;
   }
 }
 

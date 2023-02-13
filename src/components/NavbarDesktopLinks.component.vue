@@ -19,7 +19,9 @@
       <div v-if="loggedIn">
         <v-btn text router to="/user">
           <v-icon>mdi-account-outline</v-icon>
-          <span v-if="loggedIn">{{ user.email }}</span>
+          <span v-if="loggedIn">{{
+            user.firstName + " " + user.lastName
+          }}</span>
         </v-btn>
         <v-btn icon plain router to="/" @click="logOut()">
           <v-icon>mdi-exit-to-app</v-icon>

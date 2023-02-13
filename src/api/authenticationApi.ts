@@ -1,5 +1,6 @@
 import API from "@/api/api";
 import { AxiosResponse as Response } from "axios";
+import { User } from "@/store/modules/user";
 
 interface RegisterRequest {
   firstName: string;
@@ -15,6 +16,7 @@ interface AuthenticationRequest {
 
 interface AuthenticationResponse {
   token: string;
+  user: User;
 }
 
 const AuthentizationApi = {

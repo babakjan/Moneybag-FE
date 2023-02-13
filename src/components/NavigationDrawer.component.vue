@@ -11,10 +11,12 @@
             <div>
               <v-avatar color="primary" size="40">
                 <span class="white--text">{{
-                  user.email[0].toLocaleUpperCase()
+                  (user.firstName[0] + user.lastName[0]).toLocaleUpperCase()
                 }}</span>
               </v-avatar>
-              <span class="mx-2">{{ user.email }}</span>
+              <span class="mx-2">{{
+                user.firstName + " " + user.lastName
+              }}</span>
             </div>
             <v-btn icon plain router to="/" @click="logOut()" class="ml-8 mt-2">
               Log-out
