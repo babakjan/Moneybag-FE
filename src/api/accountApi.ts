@@ -16,15 +16,24 @@ interface Account {
   expenses: number | null;
 }
 
+interface CreateUpdateAccountRequest {
+  id: null | number;
+  name: string;
+  currency: string;
+  balance: number;
+  color: string;
+  icon: string;
+  includeInStatistic: boolean;
+  userId: number;
+}
+
 const AccountApi = {
   API: new API(),
   DOMAIN: "/accounts",
 
+  //get all with incomes and expenses
   getUserAccountsWithIncomesAndExpenses(): Promise<Response<Account[]>> {
-    let userId = null;
-    if (store.getters.user != null) {
-      userId = store.getters.user.id;
-    }
+    const userId = this._getUserId();
     if (!userId) {
       return Promise.reject("User id not found, login again.");
     }
@@ -32,7 +41,44 @@ const AccountApi = {
       { name: "withIncomesAndExpenses", value: true },
     ]);
   },
+
+  //get by id
+  getById(id: string): Promise<Response<Account>> {
+    return this.API.get(this.DOMAIN + `/${id}`);
+  },
+
+  //create
+  createAccount(data: CreateUpdateAccountRequest): Promise<Response<Account>> {
+    const userId = this._getUserId();
+    if (!userId) {
+      return Promise.reject("User id not found, login again.");
+    }
+    data.userId = userId;
+    return this.API.post(this.DOMAIN, data);
+  },
+
+  //update
+  updateAccount(
+    id: string,
+    data: CreateUpdateAccountRequest
+  ): Promise<Response<Account>> {
+    const userId = this._getUserId();
+    if (!userId) {
+      return Promise.reject("User id not found, login again.");
+    }
+    data.userId = userId;
+    return this.API.put(this.DOMAIN + `/${id}`, data);
+  },
+
+  //get user id from vuex
+  _getUserId(): null | number {
+    let userId = null;
+    if (store.getters.user != null) {
+      userId = store.getters.user.id;
+    }
+    return userId;
+  },
 };
 
 export default AccountApi;
-export { AccountApi, Account };
+export { AccountApi, Account, CreateUpdateAccountRequest };

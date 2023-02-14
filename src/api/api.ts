@@ -43,6 +43,22 @@ class API {
     return this.axiosInstance.request(requestConfig);
   }
 
+  put(
+    path: string,
+    data: any,
+    parameters = [] as ApiParameter[]
+  ): Promise<Response> {
+    const requestConfig = {
+      url: this.createUrl(path, parameters),
+      method: "PUT",
+      data: data,
+    } as RequestConfig;
+
+    this.createHeaders(requestConfig);
+
+    return this.axiosInstance.request(requestConfig);
+  }
+
   createHeaders(requestConfig: RequestConfig): void {
     const token = store.getters.token;
     let requestHeaders = requestConfig.headers;

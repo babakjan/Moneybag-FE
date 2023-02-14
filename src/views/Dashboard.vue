@@ -2,7 +2,7 @@
   <section class="max-width main">
     <div class="heading-container">
       <h1 class="main">Dashboard</h1>
-      <v-btn color="secondary">
+      <v-btn color="secondary" @click="$router.push('/accounts/create')">
         <v-icon left>mdi-plus</v-icon>
         <span>Add account</span>
       </v-btn>
@@ -79,7 +79,7 @@ export default class Dashboard extends Vue {
 
 .skeleton {
   width: 20rem;
-  height: 11rem;
+  height: 11.25rem;
 }
 
 @media only screen and (max-width: 750px) {

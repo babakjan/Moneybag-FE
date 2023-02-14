@@ -9,7 +9,15 @@
       <v-icon>{{ account.icon }}</v-icon>
       <span class="name">{{ account.name }}</span>
       <v-spacer />
-      <v-icon>mdi-dots-horizontal</v-icon>
+      <v-icon
+        @click="
+          $router.push({
+            name: 'UpdateAccount',
+            params: { accountId: account.id },
+          })
+        "
+        >mdi-dots-horizontal</v-icon
+      >
     </div>
 
     <!--balance-->
@@ -21,13 +29,13 @@
     <!--month incomes-->
     <div class="stats">
       <span>{{ currentMonth }}</span>
-      <span class="green--text">+ {{ account.incomes.toFixed(2) }}</span>
+      <span class="green--text">+{{ account.incomes.toFixed(2) }}</span>
     </div>
 
     <!--mont expenses-->
     <div class="stats">
       <span>{{ currentMonth }}</span>
-      <span class="red--text">-{{ account.expenses.toFixed(2) }}</span>
+      <span class="red--text">{{ account.expenses.toFixed(2) }}</span>
     </div>
   </v-card>
 </template>
@@ -65,12 +73,13 @@ export default class AccountCard extends Vue {
 }
 
 .name {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   margin: 0 0.5rem;
 }
 
 .balance {
   font-size: 2rem;
+  margin-bottom: 3rem;
 }
 
 .currency {

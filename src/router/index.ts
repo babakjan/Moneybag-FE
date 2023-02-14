@@ -14,13 +14,33 @@ const routes: Array<RouteConfig> = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "dashboard" */ "../views/Dashboard.vue"),
+    component: () => import("../views/Dashboard.vue"),
     meta: {
       requiresAuth: true,
+    },
+  },
+  {
+    path: "/accounts/create",
+    name: "CreateAccount",
+    component: () => import("../views/CreateUpdateAccount.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+    props: {
+      update: false,
+      title: "Create account",
+    },
+  },
+  {
+    path: "/accounts/:accountId",
+    name: "UpdateAccount",
+    component: () => import("../views/CreateUpdateAccount.vue"),
+    meta: {
+      requiresAuth: true,
+      title: "Edit account",
+    },
+    props: {
+      update: true,
     },
   },
   {

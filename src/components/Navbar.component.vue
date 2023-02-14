@@ -17,7 +17,7 @@
       </div>
     </v-app-bar>
 
-    <NavigationDrawer :links="links" :drawerOpen.sync="drawerOpen" />
+    <NavigationDrawer :links="links" :drawerOpen="drawerOpen" />
   </div>
 </template>
 
@@ -47,7 +47,7 @@ interface NavigationLink {
 export default class Navbar extends Vue {
   loggedIn!: boolean;
 
-  drawerOpen = false;
+  drawerOpen = true;
 
   homeLinks = [
     {
