@@ -70,8 +70,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  //if we are on login page and we are logged in go to dashboard
-  if (to.path === "/login" && store.getters.loggedIn) {
+  //if we are on login page, and we are logged in go to dashboard
+  if (to.path === "/login" && store.getters["user/loggedIn"]) {
     next("/dashboard");
     return;
   }
@@ -79,7 +79,7 @@ router.beforeEach((to, from, next) => {
   //if page requires authentication and user isn't logged in
   if (
     to.matched.some((record) => record.meta.requiresAuth) &&
-    !store.getters.loggedIn
+    !store.getters["user/loggedIn"]
   ) {
     next("/login");
     return;

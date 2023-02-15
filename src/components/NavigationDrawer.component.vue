@@ -95,11 +95,10 @@ export default class NavigationDrawer extends Vue {
   @Prop() drawerOpen: boolean | undefined;
   @Prop() links: NavigationLink[] | undefined;
 
-  @Getter loggedIn!: boolean;
-  @Getter user!: User | null;
+  @Getter("user/loggedIn") loggedIn!: boolean;
+  @Getter("user/user") user!: User | null;
 
-  @Mutation setLoggedIn!: (data: boolean) => void;
-  @Mutation logOut!: () => void;
+  @Mutation("user/logOut") logOut!: () => void;
 
   get drawerOpenLocal(): boolean {
     return this.drawerOpen || false;

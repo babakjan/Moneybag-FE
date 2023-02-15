@@ -26,7 +26,7 @@ import { Component, Vue } from "vue-property-decorator";
 import Logo from "./Logo.component.vue";
 import NavigationDrawer from "./NavigationDrawer.component.vue";
 import NavbarDesktopLinks from "./NavbarDesktopLinks.component.vue";
-import { mapGetters } from "vuex";
+import { Getter } from "vuex-class";
 
 interface NavigationLink {
   to: string;
@@ -40,14 +40,11 @@ interface NavigationLink {
     NavigationDrawer,
     NavbarDesktopLinks,
   },
-  computed: {
-    ...mapGetters(["loggedIn"]),
-  },
 })
 export default class Navbar extends Vue {
-  loggedIn!: boolean;
-
   drawerOpen = true;
+
+  @Getter("user/loggedIn") loggedIn!: boolean;
 
   homeLinks = [
     {

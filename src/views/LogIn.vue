@@ -7,25 +7,23 @@
 
           <!--email-->
           <v-text-field
-            ref="email"
             v-model="authenticateForm.email"
-            prepend-icon="mdi-email-outline"
             :rules="rules.email"
             label="Email"
             placeholder="johndoe@gmail.com"
+            prepend-icon="mdi-email-outline"
             required
           ></v-text-field>
 
           <!--password-->
           <v-text-field
-            ref="password"
             v-model="authenticateForm.password"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            prepend-icon="mdi-lock-outline"
             :rules="rules.password"
             :type="showPassword ? 'text' : 'password'"
-            @click:append="showPassword = !showPassword"
             label="Password"
+            prepend-icon="mdi-lock-outline"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPassword = !showPassword"
             required
           ></v-text-field>
 
@@ -83,7 +81,7 @@ export default class LogIn extends Vue {
 
   @Action("snackbar/showSnack") showSnack!: (text: string) => void;
 
-  @Mutation setTokenAndUser!: ({
+  @Mutation("user/setTokenAndUser") setTokenAndUser!: ({
     token,
     user,
   }: {
@@ -91,6 +89,7 @@ export default class LogIn extends Vue {
     user: User;
   }) => void;
 
+  //submit login form
   submit(): void {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore

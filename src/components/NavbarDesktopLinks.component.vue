@@ -52,11 +52,10 @@ import { User } from "@/store/modules/user";
 export default class NavbarDesktopLinks extends Vue {
   @Prop({ default: [] }) links!: NavigationLink[];
 
-  @Getter loggedIn!: boolean;
-  @Getter user!: User | null;
+  @Getter("user/loggedIn") loggedIn!: boolean;
+  @Getter("user/user") user!: User | null;
 
-  @Mutation setLoggedIn!: (data: boolean) => void;
-  @Mutation logOut!: () => void;
+  @Mutation("user/logOut") logOut!: () => void;
 }
 </script>
 

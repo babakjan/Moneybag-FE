@@ -71,7 +71,7 @@ class API {
   }
 
   createHeaders(requestConfig: RequestConfig): void {
-    const token = store.getters.token;
+    const token = store.getters["user/token"];
     let requestHeaders = requestConfig.headers;
     if (!requestHeaders) {
       requestHeaders = {};
@@ -90,6 +90,15 @@ class API {
       delimiter = "&";
     }
     return path;
+  }
+
+  //get user id from vuex
+  getUserId(): null | number {
+    let userId = null;
+    if (store.getters["user/user"] != null) {
+      userId = store.getters["user/user"].id;
+    }
+    return userId;
   }
 }
 

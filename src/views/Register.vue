@@ -7,53 +7,49 @@
 
           <!--first name-->
           <v-text-field
-            ref="firstName"
             v-model="registerForm.firstName"
-            prepend-icon="mdi-account-outline"
             :rules="rules.firstName"
+            :counter="maxLength"
             label="First Name"
             placeholder="John"
-            :counter="maxLength"
+            prepend-icon="mdi-account-outline"
             required
           ></v-text-field>
 
           <!--last name-->
           <v-text-field
-            ref="lastName"
             v-model="registerForm.lastName"
-            prepend-icon="mdi-account-outline"
             :rules="rules.lastName"
+            :counter="maxLength"
             label="Last Name"
             placeholder="Doe"
-            :counter="maxLength"
+            prepend-icon="mdi-account-outline"
             required
           ></v-text-field>
 
           <!--email-->
           <v-text-field
-            ref="email"
             v-model="registerForm.email"
-            prepend-icon="mdi-email-outline"
             :rules="rules.email"
+            :counter="maxLength"
             label="Email"
             placeholder="johndoe@gmail.com"
-            :counter="maxLength"
+            prepend-icon="mdi-email-outline"
             required
           ></v-text-field>
 
           <!--password-->
           <v-text-field
-            ref="password"
             v-model="registerForm.password"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            prepend-icon="mdi-lock-outline"
             :rules="rules.password"
-            :type="showPassword ? 'text' : 'password'"
-            @click:append="showPassword = !showPassword"
-            hint="At least 8 characters"
-            label="Password"
             :counter="maxLength"
+            :type="showPassword ? 'text' : 'password'"
+            label="Password"
+            prepend-icon="mdi-lock-outline"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            hint="At least 8 characters"
             required
+            @click:append="showPassword = !showPassword"
           ></v-text-field>
 
           <!--login-->
@@ -94,6 +90,7 @@ export default class Register extends Vue {
   formLoading = false;
   maxLength = 40;
   maxLengthFieldErrorMsg = "Must be less than " + this.maxLength + "characters";
+  fieldRequiredErrorMsg = "This field is required.";
   showPassword = false;
   emailPattern =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -101,7 +98,7 @@ export default class Register extends Vue {
   rules = {
     firstName: [
       (): boolean | string =>
-        !!this.registerForm.firstName || "First name is required.",
+        !!this.registerForm.firstName || this.fieldRequiredErrorMsg,
       (): boolean | string =>
         !!this.registerForm.firstName ||
         this.registerForm.firstName.length <= this.maxLength ||
@@ -109,17 +106,18 @@ export default class Register extends Vue {
     ],
     lastName: [
       (): boolean | string =>
-        !!this.registerForm.lastName || "Last name is required.",
+        !!this.registerForm.lastName || this.fieldRequiredErrorMsg,
       (): boolean | string =>
         !!this.registerForm.lastName ||
         this.registerForm.lastName.length <= this.maxLength ||
         this.maxLengthFieldErrorMsg,
     ],
     email: [
-      (): boolean | string => !!this.registerForm.email || "Email is required.",
+      (): boolean | string =>
+        !!this.registerForm.email || this.fieldRequiredErrorMsg,
       (): boolean | string =>
         this.emailPattern.test(this.registerForm.email) ||
-        "E-mail must be valid",
+        "E-mail is not valid",
       (): boolean | string =>
         (!!this.registerForm.email &&
           this.registerForm.email.length <= this.maxLength) ||
@@ -127,7 +125,7 @@ export default class Register extends Vue {
     ],
     password: [
       (): boolean | string =>
-        !!this.registerForm.password || "Password is required.",
+        !!this.registerForm.password || this.fieldRequiredErrorMsg,
       (): boolean | string =>
         (!!this.registerForm.password &&
           this.registerForm.password.length <= this.maxLength) ||
@@ -141,7 +139,7 @@ export default class Register extends Vue {
 
   @Action("snackbar/showSnack") showSnack!: (text: string) => void;
 
-  @Mutation setTokenAndUser!: ({
+  @Mutation("user/setTokenAndUser") setTokenAndUser!: ({
     token,
     user,
   }: {

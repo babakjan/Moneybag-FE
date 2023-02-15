@@ -13,7 +13,7 @@ class State {
 }
 
 const user = {
-  namespaced: false,
+  namespaced: true,
   state: new State(),
   mutations: {
     setUser: (state: State, data: User): void => {

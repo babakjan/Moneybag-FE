@@ -1,6 +1,5 @@
 import API from "./api";
 import { AxiosResponse as Response } from "axios";
-import store from "@/store";
 
 interface Account {
   id: number;
@@ -33,7 +32,7 @@ const AccountApi = {
 
   //get all with incomes and expenses
   getUserAccountsWithIncomesAndExpenses(): Promise<Response<Account[]>> {
-    const userId = this._getUserId();
+    const userId = this.API.getUserId();
     if (!userId) {
       return Promise.reject("User id not found, login again.");
     }
@@ -49,7 +48,7 @@ const AccountApi = {
 
   //create
   createAccount(data: CreateUpdateAccountRequest): Promise<Response<Account>> {
-    const userId = this._getUserId();
+    const userId = this.API.getUserId();
     if (!userId) {
       return Promise.reject("User id not found, login again.");
     }
@@ -62,7 +61,7 @@ const AccountApi = {
     id: string,
     data: CreateUpdateAccountRequest
   ): Promise<Response<Account>> {
-    const userId = this._getUserId();
+    const userId = this.API.getUserId();
     if (!userId) {
       return Promise.reject("User id not found, login again.");
     }
@@ -73,15 +72,6 @@ const AccountApi = {
   //delete
   deleteAccount(id: string): Promise<Response> {
     return this.API.delete(this.DOMAIN + `/${id}`);
-  },
-
-  //get user id from vuex
-  _getUserId(): null | number {
-    let userId = null;
-    if (store.getters.user != null) {
-      userId = store.getters.user.id;
-    }
-    return userId;
   },
 };
 
