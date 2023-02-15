@@ -164,7 +164,7 @@ import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
   },
 })
 export default class CreateUpdateAccount extends Vue {
-  @Prop() update: boolean | undefined;
+  @Prop({ default: false }) update!: boolean;
 
   accountId = null as null | string;
   submitLoading = false;

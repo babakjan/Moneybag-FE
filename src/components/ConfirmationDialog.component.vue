@@ -29,22 +29,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, PropSync } from "vue-property-decorator";
 
 @Component
 export default class ConfirmationDialog extends Vue {
-  @Prop({ default: "Are you sure?" }) label!: string;
-  @Prop({ default: "Delete" }) confirmLabel!: string;
-  @Prop({ default: "Cancel" }) cancelLabel!: string;
-  @Prop({ default: false }) show!: boolean;
-
-  get showLocal(): boolean {
-    return this.show || false;
-  }
-
-  set showLocal(value: boolean) {
-    this.$emit("update:show", value);
-  }
+  @Prop({ default: "Are you sure?" }) readonly label!: string;
+  @Prop({ default: "Delete" }) readonly confirmLabel!: string;
+  @Prop({ default: "Cancel" }) readonly cancelLabel!: string;
+  @PropSync("show", { type: Boolean, default: false }) showLocal!: boolean;
 
   cancel(): void {
     this.showLocal = false;

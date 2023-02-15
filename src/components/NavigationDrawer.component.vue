@@ -7,6 +7,7 @@
       >
         <!-- sign btns -->
         <v-list-item class="mb-4">
+          <!--signed in-->
           <div v-if="loggedIn" class="mt-2 d-flex align-start flex-column">
             <div>
               <v-avatar color="primary" size="40">
@@ -14,9 +15,9 @@
                   (user.firstName[0] + user.lastName[0]).toLocaleUpperCase()
                 }}</span>
               </v-avatar>
-              <span class="mx-2">{{
-                user.firstName + " " + user.lastName
-              }}</span>
+              <span class="mx-2">
+                {{ user.firstName + " " + user.lastName }}
+              </span>
             </div>
             <v-btn icon plain router to="/" @click="logOut()" class="ml-8 mt-2">
               Log-out
@@ -24,12 +25,13 @@
             </v-btn>
           </div>
 
+          <!--not signed in-->
           <div v-else class="d-flex">
             <v-btn color="secondary" router to="/register">
               <v-icon left>mdi-account-plus-outline</v-icon>Sing-up
             </v-btn>
             <v-btn plain class="ml-1" router to="/login">
-              <v-icon>mdi-account-lock-open-outline</v-icon>Sing-in
+              <v-icon left>mdi-account-lock-open-outline</v-icon>Sing-in
             </v-btn>
           </div>
         </v-list-item>
@@ -93,8 +95,8 @@ export default class NavigationDrawer extends Vue {
   @Prop() drawerOpen: boolean | undefined;
   @Prop() links: NavigationLink[] | undefined;
 
-  @Getter loggedIn: boolean | undefined;
-  @Getter user: User | null | undefined;
+  @Getter loggedIn!: boolean;
+  @Getter user!: User | null;
 
   @Mutation setLoggedIn!: (data: boolean) => void;
   @Mutation logOut!: () => void;

@@ -10,20 +10,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, PropSync } from "vue-property-decorator";
 
 @Component
 export default class Snackbar extends Vue {
-  @Prop() show: boolean | undefined;
-  @Prop() text: string | undefined;
-
-  get showLocal(): boolean {
-    return this.show || false;
-  }
-
-  set showLocal(value: boolean) {
-    this.$emit("update:show", value);
-  }
+  @Prop({ default: "" }) text!: string;
+  @PropSync("show", { type: Boolean, default: false }) showLocal!: boolean;
 }
 </script>
 

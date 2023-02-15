@@ -8,7 +8,9 @@
     <div class="d-flex align-center">
       <v-icon>{{ account.icon }}</v-icon>
       <span class="name">{{ account.name }}</span>
+
       <v-spacer />
+
       <v-icon
         @click="
           $router.push({
@@ -46,7 +48,7 @@ import { Account } from "@/api/accountApi";
 
 @Component
 export default class AccountCard extends Vue {
-  @Prop() account: Account | undefined;
+  @Prop({ required: true }) account!: Account;
 
   months = [
     "January",
@@ -62,6 +64,7 @@ export default class AccountCard extends Vue {
     "November",
     "December",
   ];
+
   currentMonth = this.months[new Date().getMonth()];
 }
 </script>

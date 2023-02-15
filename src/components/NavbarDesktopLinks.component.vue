@@ -4,9 +4,9 @@
     <ul class="nav-links d-none d-md-flex">
       <li v-for="(link, index) in links" :key="index">
         <span v-if="loggedIn">
-          <router-link :to="link.to" class="white--text">{{
-            link.label
-          }}</router-link>
+          <router-link :to="link.to" class="white--text">
+            {{ link.label }}
+          </router-link>
         </span>
         <span v-else>
           <a :href="link.to" class="white--text">{{ link.label }}</a>
@@ -18,10 +18,10 @@
       <!-- account -->
       <div v-if="loggedIn">
         <v-btn text router to="/user">
-          <v-icon>mdi-account-outline</v-icon>
-          <span v-if="loggedIn">{{
-            user.firstName + " " + user.lastName
-          }}</span>
+          <v-icon left>mdi-account-outline</v-icon>
+          <span v-if="loggedIn">
+            {{ user.firstName + " " + user.lastName }}
+          </span>
         </v-btn>
         <v-btn icon plain router to="/" @click="logOut()">
           <v-icon>mdi-exit-to-app</v-icon>
@@ -31,7 +31,7 @@
       <!-- sign btns -->
       <div v-else>
         <v-btn plain :ripple="false" router to="/login">
-          <v-icon>mdi-account-lock-open-outline</v-icon>Sing-in
+          <v-icon left>mdi-account-lock-open-outline</v-icon>Sing-in
         </v-btn>
 
         <v-btn color="secondary" router to="/register">
@@ -50,10 +50,10 @@ import { User } from "@/store/modules/user";
 
 @Component
 export default class NavbarDesktopLinks extends Vue {
-  @Prop() links: NavigationLink[] | undefined;
+  @Prop({ default: [] }) links!: NavigationLink[];
 
-  @Getter loggedIn: boolean | undefined;
-  @Getter user: User | null | undefined;
+  @Getter loggedIn!: boolean;
+  @Getter user!: User | null;
 
   @Mutation setLoggedIn!: (data: boolean) => void;
   @Mutation logOut!: () => void;
