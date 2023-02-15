@@ -6,13 +6,13 @@ const errorMessage = {
       return "Email or password is incorrect";
     }
     if (error.response.data) {
-      for (const errorMsg of Object.values(
+      for (const [key, value] of Object.entries(
         error.response.data.errors as string[]
       )) {
         if (result !== "") {
           result += "\n";
         }
-        result += errorMsg;
+        result += `${key}: ${value}`;
       }
     }
     return result;

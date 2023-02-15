@@ -1,6 +1,7 @@
 <template>
   <section class="max-width main">
     <Snackbar :text="snackbarText" :show.sync="showSnackbar" />
+
     <ConfirmationDialog
       :show.sync="showDialog"
       :label="`Really delete '${account.name}'`"
@@ -16,14 +17,14 @@
       <div class="row">
         <!--name-->
         <v-text-field
-          class="input"
           v-model="account.name"
-          prepend-icon="mdi-wallet-outline"
           :rules="rules.name"
-          label="Name"
-          placeholder="Savings"
           :counter="maxLength"
           :loading="accountLoading"
+          label="Name"
+          placeholder="Savings"
+          prepend-icon="mdi-wallet-outline"
+          class="input"
           required
         ></v-text-field>
       </div>
@@ -32,84 +33,45 @@
       <div class="row">
         <!--balance-->
         <v-text-field
-          class="input"
           v-model="account.balance"
-          prepend-icon="mdi-cash"
+          :rules="rules.balance"
           :loading="accountLoading"
           label="Balance"
           placeholder="CZK"
+          prepend-icon="mdi-cash"
+          class="input"
           type="number"
           required
         ></v-text-field>
 
         <!--currency-->
         <v-text-field
-          class="input"
           v-model="account.currency"
-          prepend-icon="mdi-currency-eur"
           :rules="rules.currency"
-          label="Currency"
-          placeholder="CZK"
           :counter="maxLength"
           :loading="accountLoading"
+          label="Currency"
+          placeholder="CZK"
+          prepend-icon="mdi-currency-eur"
+          class="input"
           required
         ></v-text-field>
       </div>
 
       <div class="row">
         <!--color-->
-        <v-autocomplete
+        <ColorSelect
           v-model="account.color"
-          prepend-icon="mdi-palette"
-          :items="colors"
-          label="Color"
           :loading="accountLoading"
           class="input"
-        >
-          <!--selected item-->
-          <template #selection="{ item }">
-            <div
-              :style="'background-color: ' + item.value + ';'"
-              class="color-example"
-            />
-            {{ item.text }}
-          </template>
-
-          <!--list of items to chose from-->
-          <template #item="{ item, attrs, on }">
-            <v-list-item v-bind="attrs" v-on="on">
-              <div
-                :style="'background-color: ' + item.value + ';'"
-                class="color-example"
-              />
-              {{ item.text }}
-            </v-list-item>
-          </template>
-        </v-autocomplete>
+        />
 
         <!--icon-->
-        <v-autocomplete
+        <IconSelect
           v-model="account.icon"
-          prepend-icon="mdi-vector-arrange-above"
-          :items="icons"
-          label="Icon"
           :loading="accountLoading"
           class="input"
-        >
-          <!--selected item-->
-          <template #selection="{ item }">
-            <v-icon left>{{ item.value }}</v-icon
-            >{{ item.text }}
-          </template>
-
-          <!--list of items to chose from-->
-          <template #item="{ item, attrs, on }">
-            <v-list-item v-bind="attrs" v-on="on">
-              <v-icon left>{{ item.value }}</v-icon
-              >{{ item.text }}
-            </v-list-item>
-          </template>
-        </v-autocomplete>
+        />
       </div>
 
       <!--4th row-->
@@ -123,6 +85,7 @@
 
         <!--buttons-->
         <div>
+          <!--delete-->
           <v-btn
             v-if="update"
             :loading="deleteLoading"
@@ -137,9 +100,9 @@
           <!--submit-->
           <v-btn
             color="secondary"
+            :loading="submitLoading"
             type="submit"
             class="mx-4"
-            :loading="submitLoading"
           >
             <v-icon left>{{ update ? "mdi-update" : "mdi-plus" }}</v-icon>
             {{ update ? "Update" : "Create" }}
@@ -156,11 +119,15 @@ import accountApi, { CreateUpdateAccountRequest } from "@/api/accountApi";
 import errorMessage from "@/services/errorMessage";
 import Snackbar from "@/components/Snackbar.component.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
+import ColorSelect from "@/components/ColorSelect.component.vue";
+import IconSelect from "@/components/IconSelect.component.vue";
 
 @Component({
   components: {
     Snackbar,
     ConfirmationDialog,
+    ColorSelect,
+    IconSelect,
   },
 })
 export default class CreateUpdateAccount extends Vue {
@@ -172,79 +139,42 @@ export default class CreateUpdateAccount extends Vue {
   deleteLoading = false;
   maxLength = 40;
   maxLengthFieldErrorMsg = "Must be less than " + this.maxLength + "characters";
+  fieldRequiredErrorMsg = "This field is required.";
   showSnackbar = false;
   showDialog = false;
   snackbarText = "";
-  colors = [
-    {
-      text: "Green",
-      value: "#388E3C",
-    },
-    {
-      text: "Orange",
-      value: "#FFAB00",
-    },
-    {
-      text: "Purple",
-      value: "#6200EA",
-    },
-    {
-      text: "Blue",
-      value: "#6290ff",
-    },
-    {
-      text: "Red",
-      value: "#F44336",
-    },
-  ];
-  icons = [
-    {
-      text: "Piggy",
-      value: "mdi-piggy-bank-outline",
-    },
-    {
-      text: "Money",
-      value: "mdi-cash",
-    },
-    {
-      text: "Bitcoin",
-      value: "mdi-bitcoin",
-    },
-    {
-      text: "Lite-coin",
-      value: "mdi-litecoin",
-    },
-    {
-      text: "Coin",
-      value: "mdi-hand-coin",
-    },
-  ];
+
+  account = {
+    id: null,
+    name: "",
+    balance: 0,
+    currency: "CZK",
+    color: "#6290ff",
+    icon: "mdi-piggy-bank-outline",
+    includeInStatistic: true,
+  } as CreateUpdateAccountRequest;
+
   rules = {
     name: [
-      (): boolean | string => !!this.account.name || "Name is required.",
+      (): boolean | string => !!this.account.name || this.fieldRequiredErrorMsg,
       (): boolean | string =>
         !!this.account.name ||
         this.account.name.length <= this.maxLength ||
         this.maxLengthFieldErrorMsg,
     ],
+    balance: [
+      (): boolean | string =>
+        !!this.account.balance || this.fieldRequiredErrorMsg,
+    ],
     currency: [
       (): boolean | string =>
-        !!this.account.currency || "Currency is required.",
+        !!this.account.currency || this.fieldRequiredErrorMsg,
       (): boolean | string =>
         !!this.account.currency ||
         this.account.currency.length <= this.maxLength ||
         this.maxLengthFieldErrorMsg,
     ],
   };
-  account = {
-    id: null,
-    name: "",
-    balance: 0,
-    currency: "CZK",
-    color: this.colors[0].value,
-    icon: this.icons[0].value,
-    includeInStatistic: true,
-  } as CreateUpdateAccountRequest;
 
   created(): void {
     this.createdOrActivated();
@@ -287,6 +217,7 @@ export default class CreateUpdateAccount extends Vue {
       .getById(this.accountId)
       .then((response) => {
         this.account.name = response.data.name; //without this input takes name as empty
+        this.account.balance = response.data.balance; //same as above
         this.account = response.data;
       })
       .catch((error) => {
@@ -359,15 +290,6 @@ export default class CreateUpdateAccount extends Vue {
 .row .input {
   width: calc(50% - 1rem);
   padding: 0.5rem 1rem;
-}
-
-.color-example {
-  height: 1rem;
-  min-width: 1rem;
-  display: inline-block;
-  margin: 0 0.5rem;
-  border-radius: 0.25rem;
-  border: 1px solid #e0e0e0;
 }
 
 @media only screen and (max-width: 750px) {
