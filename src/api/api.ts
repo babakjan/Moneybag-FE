@@ -59,6 +59,17 @@ class API {
     return this.axiosInstance.request(requestConfig);
   }
 
+  delete(path: string, parameters = [] as ApiParameter[]): Promise<Response> {
+    const requestConfig = {
+      url: this.createUrl(path, parameters),
+      method: "DELETE",
+    } as RequestConfig;
+
+    this.createHeaders(requestConfig);
+
+    return this.axiosInstance.request(requestConfig);
+  }
+
   createHeaders(requestConfig: RequestConfig): void {
     const token = store.getters.token;
     let requestHeaders = requestConfig.headers;

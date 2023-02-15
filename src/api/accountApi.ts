@@ -70,6 +70,11 @@ const AccountApi = {
     return this.API.put(this.DOMAIN + `/${id}`, data);
   },
 
+  //delete
+  deleteAccount(id: string): Promise<Response> {
+    return this.API.delete(this.DOMAIN + `/${id}`);
+  },
+
   //get user id from vuex
   _getUserId(): null | number {
     let userId = null;

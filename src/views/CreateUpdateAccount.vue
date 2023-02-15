@@ -1,6 +1,11 @@
 <template>
   <section class="max-width main">
     <Snackbar :text="snackbarText" :show.sync="showSnackbar" />
+    <ConfirmationDialog
+      :show.sync="showDialog"
+      :label="`Really delete '${account.name}'`"
+      @confirm="deleteAccount"
+    />
 
     <h1 class="main">
       {{ update ? `Edit "${account.name}"` : "Create Account" }}
@@ -18,6 +23,7 @@
           label="Name"
           placeholder="Savings"
           :counter="maxLength"
+          :loading="accountLoading"
           required
         ></v-text-field>
       </div>
@@ -29,6 +35,7 @@
           class="input"
           v-model="account.balance"
           prepend-icon="mdi-cash"
+          :loading="accountLoading"
           label="Balance"
           placeholder="CZK"
           type="number"
@@ -44,6 +51,7 @@
           label="Currency"
           placeholder="CZK"
           :counter="maxLength"
+          :loading="accountLoading"
           required
         ></v-text-field>
       </div>
@@ -55,6 +63,7 @@
           prepend-icon="mdi-palette"
           :items="colors"
           label="Color"
+          :loading="accountLoading"
           class="input"
         >
           <!--selected item-->
@@ -83,7 +92,8 @@
           v-model="account.icon"
           prepend-icon="mdi-vector-arrange-above"
           :items="icons"
-          label="Color"
+          label="Icon"
+          :loading="accountLoading"
           class="input"
         >
           <!--selected item-->
@@ -111,16 +121,30 @@
           class="input"
         ></v-checkbox>
 
-        <!--submit-->
-        <v-btn
-          color="secondary"
-          type="submit"
-          class="mx-4"
-          :loading="formLoading"
-        >
-          <v-icon left>{{ update ? "mdi-update" : "mdi-plus" }}</v-icon>
-          {{ update ? "Update" : "Create" }}
-        </v-btn>
+        <!--buttons-->
+        <div>
+          <v-btn
+            v-if="update"
+            :loading="deleteLoading"
+            color="red"
+            class="white--text ml-4"
+            @click="showDialog = true"
+          >
+            <v-icon left>mdi-trash-can-outline</v-icon>
+            Delete
+          </v-btn>
+
+          <!--submit-->
+          <v-btn
+            color="secondary"
+            type="submit"
+            class="mx-4"
+            :loading="submitLoading"
+          >
+            <v-icon left>{{ update ? "mdi-update" : "mdi-plus" }}</v-icon>
+            {{ update ? "Update" : "Create" }}
+          </v-btn>
+        </div>
       </div>
     </v-form>
   </section>
@@ -131,21 +155,25 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import accountApi, { CreateUpdateAccountRequest } from "@/api/accountApi";
 import errorMessage from "@/services/errorMessage";
 import Snackbar from "@/components/Snackbar.component.vue";
+import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
 
 @Component({
   components: {
     Snackbar,
+    ConfirmationDialog,
   },
 })
 export default class CreateUpdateAccount extends Vue {
   @Prop() update: boolean | undefined;
 
   accountId = null as null | string;
-  formLoading = false;
+  submitLoading = false;
   accountLoading = false;
+  deleteLoading = false;
   maxLength = 40;
   maxLengthFieldErrorMsg = "Must be less than " + this.maxLength + "characters";
   showSnackbar = false;
+  showDialog = false;
   snackbarText = "";
   colors = [
     {
@@ -269,7 +297,7 @@ export default class CreateUpdateAccount extends Vue {
   }
 
   createAccount(): void {
-    this.formLoading = true;
+    this.submitLoading = true;
     accountApi
       .createAccount(this.account)
       .then(() => {
@@ -279,7 +307,7 @@ export default class CreateUpdateAccount extends Vue {
         this.snackbarText = errorMessage.get(error);
         this.showSnackbar = true;
       })
-      .finally(() => (this.formLoading = false));
+      .finally(() => (this.submitLoading = false));
   }
 
   updateAccount(): void {
@@ -289,17 +317,33 @@ export default class CreateUpdateAccount extends Vue {
       return;
     }
 
-    this.formLoading = true;
+    this.submitLoading = true;
     accountApi
       .updateAccount(this.accountId, this.account)
-      .then(() => {
-        this.$router.push("/dashboard");
-      })
+      .then(() => this.$router.push("/dashboard"))
       .catch((error) => {
         this.snackbarText = errorMessage.get(error);
         this.showSnackbar = true;
       })
-      .finally(() => (this.formLoading = false));
+      .finally(() => (this.submitLoading = false));
+  }
+
+  deleteAccount(): void {
+    if (!this.accountId) {
+      this.snackbarText = "Can't load account, id is null";
+      this.showSnackbar = true;
+      return;
+    }
+
+    this.deleteLoading = true;
+    accountApi
+      .deleteAccount(this.accountId)
+      .then(() => this.$router.push("/dashboard"))
+      .catch((error) => {
+        this.snackbarText = errorMessage.get(error);
+        this.showSnackbar = true;
+      })
+      .finally(() => (this.deleteLoading = false));
   }
 }
 </script>
