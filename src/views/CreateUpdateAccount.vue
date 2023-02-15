@@ -159,7 +159,9 @@ export default class CreateUpdateAccount extends Vue {
     ],
     balance: [
       (): boolean | string =>
-        !!this.account.balance || this.fieldRequiredErrorMsg,
+        !!this.account.balance ||
+        this.account.balance === 0 ||
+        this.fieldRequiredErrorMsg,
     ],
     currency: [
       (): boolean | string =>

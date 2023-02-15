@@ -11,7 +11,7 @@
     </div>
 
     <!--accounts-->
-    <div class="accounts">
+    <div v-if="accounts.length > 0" class="accounts">
       <div v-if="!accountsLoading">
         <AccountCard
           v-for="account in accounts"
@@ -28,6 +28,9 @@
         />
       </div>
     </div>
+
+    <!--no accounts-->
+    <div v-else class="no-accounts">You haven't created any accounts yet!</div>
   </section>
 </template>
 
@@ -72,10 +75,7 @@ export default class Dashboard extends Vue {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.accounts {
-  margin: 2rem 0;
+  margin-bottom: 2rem;
 }
 
 .accounts > div {
@@ -89,6 +89,10 @@ export default class Dashboard extends Vue {
 .skeleton {
   width: 20rem;
   height: 11.25rem;
+}
+
+.no-accounts {
+  font-size: 1.75rem;
 }
 
 @media only screen and (max-width: 750px) {

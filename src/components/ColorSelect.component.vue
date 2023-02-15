@@ -30,14 +30,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, ModelSync } from "vue-property-decorator";
+import { Component, Vue, Prop, VModel } from "vue-property-decorator";
 
 @Component
 export default class ColorSelect extends Vue {
   @Prop({ default: false }) loading!: boolean;
   @Prop({ default: "Color" }) label!: string;
 
-  @ModelSync("hidden", "input") color!: string;
+  @VModel() color!: string;
 
   colors = [
     {
