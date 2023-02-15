@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Logo from "./Logo.component.vue";
+import Logo from "../Logo.component.vue";
 import NavigationDrawer from "./NavigationDrawer.component.vue";
 import NavbarDesktopLinks from "./NavbarDesktopLinks.component.vue";
 import { Getter } from "vuex-class";

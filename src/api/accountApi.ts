@@ -15,6 +15,14 @@ interface Account {
   expenses: number | null;
 }
 
+interface AccountReduced {
+  id: number;
+  name: string;
+  currency: string;
+  color: string;
+  icon: string;
+}
+
 interface CreateUpdateAccountRequest {
   id: null | number;
   name: string;
@@ -76,4 +84,4 @@ const AccountApi = {
 };
 
 export default AccountApi;
-export { AccountApi, Account, CreateUpdateAccountRequest };
+export { AccountApi, Account, AccountReduced, CreateUpdateAccountRequest };

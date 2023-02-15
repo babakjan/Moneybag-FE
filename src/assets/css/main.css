@@ -9,6 +9,11 @@ h1.main {
     font-size: 2.5rem;
 }
 
+h2.main {
+    font-weight: normal;
+    font-size: 2rem;
+}
+
 section.main {
     margin-top: 3rem;
 }

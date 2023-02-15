@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Navbar from "./components/Navbar.component.vue";
+import Navbar from "./components/navigation/Navbar.component.vue";
 import Snackbar from "@/components/Snackbar.component.vue";
 
 @Component({
