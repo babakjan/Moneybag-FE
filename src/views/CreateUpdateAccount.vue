@@ -1,7 +1,5 @@
 <template>
   <section class="max-width main">
-    <Snackbar :text="snackbarText" :show.sync="showSnackbar" />
-
     <ConfirmationDialog
       :show.sync="showDialog"
       :label="`Really delete '${account.name}'`"
@@ -117,14 +115,13 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import accountApi, { CreateUpdateAccountRequest } from "@/api/accountApi";
 import errorMessage from "@/services/errorMessage";
-import Snackbar from "@/components/Snackbar.component.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
 import ColorSelect from "@/components/ColorSelect.component.vue";
 import IconSelect from "@/components/IconSelect.component.vue";
+import { Action } from "vuex-class";
 
 @Component({
   components: {
-    Snackbar,
     ConfirmationDialog,
     ColorSelect,
     IconSelect,
@@ -140,9 +137,7 @@ export default class CreateUpdateAccount extends Vue {
   maxLength = 40;
   maxLengthFieldErrorMsg = "Must be less than " + this.maxLength + "characters";
   fieldRequiredErrorMsg = "This field is required.";
-  showSnackbar = false;
   showDialog = false;
-  snackbarText = "";
 
   account = {
     id: null,
@@ -176,6 +171,8 @@ export default class CreateUpdateAccount extends Vue {
     ],
   };
 
+  @Action("snackbar/showSnack") showSnack!: (text: string) => void;
+
   created(): void {
     this.createdOrActivated();
   }
@@ -192,6 +189,7 @@ export default class CreateUpdateAccount extends Vue {
     this.getAccount();
   }
 
+  //submit form
   submit(): void {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
@@ -205,14 +203,14 @@ export default class CreateUpdateAccount extends Vue {
     }
   }
 
+  //get account from api
   getAccount(): void {
+    this.accountLoading = true;
     if (!this.accountId) {
-      this.snackbarText = "Can't load account, id is null";
-      this.showSnackbar = true;
+      this.showSnack("Can't load account, id is null");
+      this.accountLoading = false;
       return;
     }
-
-    this.accountLoading = true;
     accountApi
       .getById(this.accountId)
       .then((response) => {
@@ -220,13 +218,11 @@ export default class CreateUpdateAccount extends Vue {
         this.account.balance = response.data.balance; //same as above
         this.account = response.data;
       })
-      .catch((error) => {
-        this.snackbarText = errorMessage.get(error);
-        this.showSnackbar = true;
-      })
+      .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.accountLoading = false));
   }
 
+  //create account on api
   createAccount(): void {
     this.submitLoading = true;
     accountApi
@@ -234,46 +230,37 @@ export default class CreateUpdateAccount extends Vue {
       .then(() => {
         this.$router.push("/dashboard");
       })
-      .catch((error) => {
-        this.snackbarText = errorMessage.get(error);
-        this.showSnackbar = true;
-      })
+      .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.submitLoading = false));
   }
 
+  //update account on api
   updateAccount(): void {
+    this.submitLoading = true;
     if (!this.accountId) {
-      this.snackbarText = "Can't load account, id is null";
-      this.showSnackbar = true;
+      this.showSnack("Can't load account, id is null");
+      this.submitLoading = false;
       return;
     }
-
-    this.submitLoading = true;
     accountApi
       .updateAccount(this.accountId, this.account)
       .then(() => this.$router.push("/dashboard"))
-      .catch((error) => {
-        this.snackbarText = errorMessage.get(error);
-        this.showSnackbar = true;
-      })
+      .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.submitLoading = false));
   }
 
+  //delete account from api
   deleteAccount(): void {
+    this.deleteLoading = true;
     if (!this.accountId) {
-      this.snackbarText = "Can't load account, id is null";
-      this.showSnackbar = true;
+      this.showSnack("Can't load account, id is null");
+      this.deleteLoading = false;
       return;
     }
-
-    this.deleteLoading = true;
     accountApi
       .deleteAccount(this.accountId)
       .then(() => this.$router.push("/dashboard"))
-      .catch((error) => {
-        this.snackbarText = errorMessage.get(error);
-        this.showSnackbar = true;
-      })
+      .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.deleteLoading = false));
   }
 }

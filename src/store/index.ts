@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import user from "@/store/modules/user";
+import snackbar from "@/store/modules/snackbar";
 
 Vue.use(Vuex);
 
@@ -13,6 +14,7 @@ const Store = new Vuex.Store<State>({
   getters: {},
   modules: {
     user: user,
+    snackbar: snackbar,
   },
 });
 

@@ -2,6 +2,8 @@
   <section class="max-width main">
     <div class="heading-container">
       <h1 class="main">Dashboard</h1>
+
+      <!--add account-->
       <v-btn color="secondary" @click="$router.push('/accounts/create')">
         <v-icon left>mdi-plus</v-icon>
         <span>Add account</span>
@@ -33,6 +35,8 @@
 import AccountApi, { Account } from "@/api/accountApi";
 import { Component, Vue } from "vue-property-decorator";
 import AccountCard from "@/components/AccountCard.component.vue";
+import { Action } from "vuex-class";
+import errorMessage from "@/services/errorMessage";
 
 @Component({
   components: { AccountCard },
@@ -41,18 +45,23 @@ export default class Dashboard extends Vue {
   accounts = [] as Account[];
   accountsLoading = false;
 
+  @Action("snackbar/showSnack") showSnack!: (text: string) => void;
+
   created(): void {
     this.createdOrActivated();
   }
+
   activated(): void {
     this.createdOrActivated();
   }
+
   createdOrActivated(): void {
     this.accountsLoading = true;
     AccountApi.getUserAccountsWithIncomesAndExpenses()
       .then((response) => {
         this.accounts = response.data;
       })
+      .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.accountsLoading = false));
   }
 }

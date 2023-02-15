@@ -1,7 +1,5 @@
 <template>
   <div class="max-width">
-    <Snackbar :text="snackbarText" :show.sync="showSnackbar" />
-
     <v-card class="form" justify="center">
       <v-form ref="form" v-model="formValid" @submit.prevent="submit">
         <v-card-text>
@@ -79,16 +77,11 @@
 import { Component, Vue } from "vue-property-decorator";
 import { RegisterRequest } from "@/api/authenticationApi";
 import authenticationApi from "@/api/authenticationApi";
-import Snackbar from "@/components/Snackbar.component.vue";
 import errorMessage from "@/services/errorMessage";
-import { Mutation } from "vuex-class";
+import { Action, Mutation } from "vuex-class";
 import { User } from "@/store/modules/user";
 
-@Component({
-  components: {
-    Snackbar,
-  },
-})
+@Component
 export default class Register extends Vue {
   registerForm: RegisterRequest = {
     firstName: "",
@@ -99,9 +92,6 @@ export default class Register extends Vue {
 
   formValid = false;
   formLoading = false;
-  showSnackbar = false;
-  snackbarText = "";
-
   maxLength = 40;
   maxLengthFieldErrorMsg = "Must be less than " + this.maxLength + "characters";
   showPassword = false;
@@ -149,6 +139,16 @@ export default class Register extends Vue {
     ],
   };
 
+  @Action("snackbar/showSnack") showSnack!: (text: string) => void;
+
+  @Mutation setTokenAndUser!: ({
+    token,
+    user,
+  }: {
+    token: string;
+    user: User;
+  }) => void;
+
   submit(): void {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
@@ -163,21 +163,10 @@ export default class Register extends Vue {
           });
           this.$router.push("/dashboard");
         })
-        .catch((error) => {
-          this.snackbarText = errorMessage.get(error);
-          this.showSnackbar = true;
-        })
+        .catch((error) => this.showSnack(errorMessage.get(error)))
         .finally(() => (this.formLoading = false));
     }
   }
-
-  @Mutation setTokenAndUser!: ({
-    token,
-    user,
-  }: {
-    token: string;
-    user: User;
-  }) => void;
 }
 </script>
 
