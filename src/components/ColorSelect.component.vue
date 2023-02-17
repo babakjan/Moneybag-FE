@@ -34,12 +34,13 @@ import { Component, Vue, Prop, VModel } from "vue-property-decorator";
 
 @Component
 export default class ColorSelect extends Vue {
+  @VModel() color!: string; //in HEX format
+
   @Prop({ default: false }) loading!: boolean;
   @Prop({ default: "Color" }) label!: string;
 
-  @VModel() color!: string;
-
   colors = [
+    //TODO add more
     {
       text: "Green",
       value: "#388E3C",

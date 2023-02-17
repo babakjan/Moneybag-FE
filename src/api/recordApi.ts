@@ -28,7 +28,10 @@ const RecordApi = {
   API: new API(),
   DOMAIN: "/records",
 
-  //get all
+  /**
+   * get all record
+   * @param parameters e.g. filtering and sorting
+   */
   getAll(parameters = [] as ApiParameter[]): Promise<Response<Record[]>> {
     const userId = this.API.getUserId();
     if (!userId) {
@@ -38,30 +41,45 @@ const RecordApi = {
     return this.API.get(this.DOMAIN, parameters);
   },
 
-  //get by id
+  /**
+   * get record by id
+   * @param id record id
+   */
   getById(id: string): Promise<Response<Record>> {
     return this.API.get(`${this.DOMAIN}/${id}`);
   },
 
-  //create
-  createRecord(data: CreateUpdateRecordRequest): Promise<Response<Record>> {
-    return this.API.post(this.DOMAIN, data);
+  /**
+   * create new record
+   * @param record record data
+   */
+  createRecord(record: CreateUpdateRecordRequest): Promise<Response<Record>> {
+    return this.API.post(this.DOMAIN, record);
   },
 
-  //update
+  /**
+   * update existing record
+   * @param id record id
+   * @param record record data
+   */
   updateRecord(
     id: string,
-    data: CreateUpdateRecordRequest
+    record: CreateUpdateRecordRequest
   ): Promise<Response<Record>> {
-    return this.API.put(`${this.DOMAIN}/${id}`, data);
+    return this.API.put(`${this.DOMAIN}/${id}`, record);
   },
 
-  //delete
+  /**
+   * delete existing record
+   * @param id record id
+   */
   deleteRecord(id: string): Promise<Response> {
     return this.API.delete(`${this.DOMAIN}/${id}`);
   },
 
-  //map Record interface to CreateUpdateRecordRequest interface
+  /**
+   * map Record interface to CreateUpdateRecordRequest interface
+   */
   recordToCreateUpdateRecordRequest(record: Record): CreateUpdateRecordRequest {
     return {
       id: record.id,

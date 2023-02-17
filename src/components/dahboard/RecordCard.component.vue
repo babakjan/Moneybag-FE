@@ -8,18 +8,18 @@
     <div class="row">
       <div>
         <!--name-->
-        <span class="record-name mr-4 font-weight-bold">{{
-          record.label
-        }}</span>
+        <span class="record-name mr-4 font-weight-bold">
+          {{ record.label }}
+        </span>
 
-        <!--note-->
+        <!--note on bigger screen-->
         <span class="note">{{ record.note }}</span>
       </div>
 
       <!--date-->
-      <span class="record-date">{{
-        momentFormater(record.date).format("D. M. YYYY")
-      }}</span>
+      <span class="record-date">
+        {{ momentFormatter(record.date).format("D. M. YYYY") }}
+      </span>
     </div>
 
     <!--note on mobile-->
@@ -57,7 +57,7 @@ import moment from "moment";
 export default class RecordCard extends Vue {
   @Prop({ required: true }) readonly record!: Record;
 
-  momentFormater = moment;
+  momentFormatter = moment;
 }
 </script>
 

@@ -2,20 +2,42 @@
   <!--records-->
   <section>
     <div class="heading-container">
-      <h2 class="main pb-4">Last records</h2>
-      <!--add account-->
+      <h2 class="main">Last records</h2>
+      <!--add record-->
       <v-btn color="secondary" @click="$router.push('/records/create')">
         <v-icon left>mdi-plus</v-icon>
         <span>Add record</span>
       </v-btn>
     </div>
 
-    <RecordCard
-      v-for="record in records"
-      :key="`record${record.id}`"
-      :record="record"
-      class="mb-4"
-    />
+    <!--cards-->
+    <div>
+      <div v-if="records.length > 0 || recordsLoading">
+        <!--records-->
+        <div v-if="!recordsLoading">
+          <RecordCard
+            v-for="record in records"
+            :key="`record${record.id}`"
+            :record="record"
+            class="mb-4"
+          />
+        </div>
+
+        <!--skeletons-->
+        <div v-else>
+          <v-skeleton-loader
+            v-for="i in 5"
+            :key="'record-loader' + i"
+            type="image"
+            class="skeleton"
+          />
+        </div>
+      </div>
+
+      <div v-else class="bigger-text">You haven't created any records yet!</div>
+    </div>
+
+    <!--no accounts-->
   </section>
 </template>
 
@@ -58,7 +80,12 @@ export default class RecordsSection extends Vue {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.skeleton {
+  height: 5.5rem;
+  margin-bottom: 1rem;
 }
 
 @media only screen and (max-width: 440px) {

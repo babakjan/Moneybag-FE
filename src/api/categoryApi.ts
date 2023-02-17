@@ -1,5 +1,5 @@
 import API from "@/api/api";
-import { AxiosResponse as Resposne } from "axios";
+import { AxiosResponse as Response } from "axios";
 
 interface Category {
   id: number;
@@ -12,7 +12,10 @@ const categoryApi = {
   API: new API(),
   DOMAIN: "/categories",
 
-  getAll(): Promise<Resposne<Category[]>> {
+  /**
+   * get all categories
+   */
+  getAll(): Promise<Response<Category[]>> {
     return this.API.get(this.DOMAIN);
   },
 };

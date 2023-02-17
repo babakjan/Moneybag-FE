@@ -29,23 +29,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, PropSync } from "vue-property-decorator";
+import { Component, Prop, Vue, PropSync, Emit } from "vue-property-decorator";
 
 @Component
 export default class ConfirmationDialog extends Vue {
+  @PropSync("show", { type: Boolean, default: false }) showLocal!: boolean;
   @Prop({ default: "Are you sure?" }) readonly label!: string;
   @Prop({ default: "Delete" }) readonly confirmLabel!: string;
   @Prop({ default: "Cancel" }) readonly cancelLabel!: string;
-  @PropSync("show", { type: Boolean, default: false }) showLocal!: boolean;
 
+  @Emit("cancel")
   cancel(): void {
     this.showLocal = false;
-    this.$emit("cancel");
   }
 
+  @Emit("confirm")
   confirm(): void {
     this.showLocal = false;
-    this.$emit("confirm");
   }
 }
 </script>

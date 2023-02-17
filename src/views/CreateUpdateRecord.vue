@@ -1,5 +1,6 @@
 <template>
   <section class="max-width main">
+    <!--dialog for deleting record-->
     <ConfirmationDialog
       :show.sync="showDialog"
       :label="`Really delete '${record.label}'`"
@@ -81,9 +82,9 @@
       </div>
 
       <!--4th row-->
-      <div class="row last-row">
+      <div class="row">
         <div class="input date-picker-container">
-          <DateTimePicker v-model="record.date" />
+          <DateTimePicker v-model="record.date" :loading="recordLoading" />
         </div>
 
         <!--buttons-->
@@ -132,12 +133,10 @@ import DateTimePicker from "@/components/DateTimePicker.component.vue";
 export default class CreateUpdateRecord extends Vue {
   @Prop({ default: false }) update!: boolean;
 
-  date = new Date().toISOString();
-
   categoriesItemType = ItemsType.CATEGORY;
   accountsItemType = ItemsType.ACCOUNT;
 
-  recordId = null as null | string;
+  recordId = null as null | string; //used when updating existing record
   submitLoading = false;
   recordLoading = false;
   deleteLoading = false;
@@ -153,6 +152,7 @@ export default class CreateUpdateRecord extends Vue {
     categoryId: null,
   } as CreateUpdateRecordRequest;
 
+  //input validation rules
   rules = {
     label: [
       (value: string): boolean | string =>
@@ -166,7 +166,7 @@ export default class CreateUpdateRecord extends Vue {
     ],
     note: [
       (value: string): boolean | string =>
-        (!!value && value.length <= 128) || "Must be less than 128 characters",
+        value.length <= 128 || "Must be less than 128 characters",
     ],
   };
 
@@ -188,18 +188,13 @@ export default class CreateUpdateRecord extends Vue {
     this.getRecord();
   }
 
-  //when user clear date, replace it by current date
-  clearDate(): void {
-    if (this.record.date == null) {
-      this.record.date = new Date().toLocaleString();
-    }
-  }
-
   //submit form
   submit(): void {
+    this.submitLoading = true;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     if (!this.$refs["form"]?.validate()) {
+      this.submitLoading = false;
       return;
     }
     if (this.update) {

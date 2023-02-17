@@ -27,12 +27,13 @@ import { Component, Vue, Prop, VModel } from "vue-property-decorator";
 
 @Component
 export default class IconSelect extends Vue {
+  @VModel() icon!: string; //material design icon name
+
   @Prop({ default: false }) loading!: boolean;
   @Prop({ default: "Icon" }) label!: string;
 
-  @VModel() icon!: string;
-
   icons = [
+    //TODO add more
     {
       text: "Piggy",
       value: "mdi-piggy-bank-outline",

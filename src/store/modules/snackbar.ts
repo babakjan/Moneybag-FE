@@ -1,5 +1,6 @@
 import { Commit } from "vuex";
 
+//global snackbar logic for displaying errors and messages
 class State {
   show = false;
   text = "";
@@ -25,6 +26,7 @@ const snackbar = {
     },
   },
   actions: {
+    //snow snackbar and display text
     showSnack: ({ commit }: { commit: Commit }, text: string): void => {
       commit("setText", text);
       commit("setShow", true);

@@ -13,7 +13,7 @@
 
     <!--cards-->
     <div>
-      <div v-if="accounts.length > 0" class="accounts">
+      <div v-if="accounts.length > 0 || accountsLoading" class="accounts">
         <!--accounts-->
         <div v-if="!accountsLoading">
           <AccountCard
@@ -27,7 +27,7 @@
         <div v-else>
           <v-skeleton-loader
             v-for="i in 3"
-            :key="'loader' + i"
+            :key="'account-loader' + i"
             type="image"
             class="skeleton"
           />
@@ -35,7 +35,7 @@
       </div>
 
       <!--no accounts-->
-      <div v-else class="no-accounts">
+      <div v-else class="bigger-text">
         You haven't created any accounts yet!
       </div>
     </div>
@@ -95,10 +95,6 @@ export default class AccountsSection extends Vue {
 .skeleton {
   width: 20rem;
   height: 11.25rem;
-}
-
-.no-accounts {
-  font-size: 1.75rem;
 }
 
 @media only screen and (max-width: 750px) {

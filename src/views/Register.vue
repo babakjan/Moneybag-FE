@@ -1,7 +1,7 @@
 <template>
   <div class="max-width">
     <v-card class="form" justify="center">
-      <v-form ref="form" v-model="formValid" @submit.prevent="submit">
+      <v-form ref="form" @submit.prevent="submit">
         <v-card-text>
           <h1 class="formHeading">Sign-up</h1>
 
@@ -14,7 +14,7 @@
             placeholder="John"
             prepend-icon="mdi-account-outline"
             required
-          ></v-text-field>
+          />
 
           <!--last name-->
           <v-text-field
@@ -25,23 +25,23 @@
             placeholder="Doe"
             prepend-icon="mdi-account-outline"
             required
-          ></v-text-field>
+          />
 
           <!--email-->
           <v-text-field
             v-model="registerForm.email"
-            :rules="[...rules.requiredAndMaxLength, ...rules.email]"
+            :rules="[...rules.requiredAndMaxLength, rules.email]"
             :counter="maxLength"
             label="Email"
             placeholder="johndoe@gmail.com"
             prepend-icon="mdi-email-outline"
             required
-          ></v-text-field>
+          />
 
           <!--password-->
           <v-text-field
             v-model="registerForm.password"
-            :rules="[...rules.requiredAndMaxLength, ...rules.password]"
+            :rules="[...rules.requiredAndMaxLength, rules.password]"
             :counter="maxLength"
             :type="showPassword ? 'text' : 'password'"
             label="Password"
@@ -50,7 +50,7 @@
             hint="At least 8 characters"
             required
             @click:append="showPassword = !showPassword"
-          ></v-text-field>
+          />
 
           <!--login-->
           <span>Already have an account? </span>
@@ -86,7 +86,6 @@ export default class Register extends Vue {
     password: "",
   };
 
-  formValid = false;
   formLoading = false;
   maxLength = 40;
   maxLengthFieldErrorMsg =
@@ -96,6 +95,7 @@ export default class Register extends Vue {
   emailPattern =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+  //input validation rules
   rules = {
     requiredAndMaxLength: [
       (value: string): boolean | string =>
@@ -104,14 +104,10 @@ export default class Register extends Vue {
         (!!value && value.length <= this.maxLength) ||
         this.maxLengthFieldErrorMsg,
     ],
-    email: [
-      (value: string): boolean | string =>
-        this.emailPattern.test(value) || "E-mail is not valid",
-    ],
-    password: [
-      (value: string): boolean | string =>
-        (!!value && value.length >= 8) || "Password length must be at least 8",
-    ],
+    email: (value: string): boolean | string =>
+      this.emailPattern.test(value) || "E-mail is not valid",
+    password: (value: string): boolean | string =>
+      (!!value && value.length >= 8) || "Password length must be at least 8",
   };
 
   @Action("snackbar/showSnack") showSnack!: (text: string) => void;
@@ -125,22 +121,24 @@ export default class Register extends Vue {
   }) => void;
 
   submit(): void {
+    this.formLoading = true;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    if (this.$refs["form"].validate()) {
-      this.formLoading = true;
-      authenticationApi
-        .register(this.registerForm)
-        .then((response) => {
-          this.setTokenAndUser({
-            token: response.data.token,
-            user: response.data.user,
-          });
-          this.$router.push("/dashboard");
-        })
-        .catch((error) => this.showSnack(errorMessage.get(error)))
-        .finally(() => (this.formLoading = false));
+    if (!this.$refs["form"].validate()) {
+      this.formLoading = false;
+      return;
     }
+    authenticationApi
+      .register(this.registerForm)
+      .then((response) => {
+        this.setTokenAndUser({
+          token: response.data.token,
+          user: response.data.user,
+        });
+        this.$router.push("/dashboard");
+      })
+      .catch((error) => this.showSnack(errorMessage.get(error)))
+      .finally(() => (this.formLoading = false));
   }
 }
 </script>

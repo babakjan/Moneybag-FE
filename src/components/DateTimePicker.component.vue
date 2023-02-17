@@ -4,11 +4,12 @@
     <template v-slot:activator="{ on }">
       <v-text-field
         v-model="formattedDate"
+        :loading="loading"
         label="Date Time Picker"
         prepend-icon="event"
         readonly
         v-on="on"
-      ></v-text-field>
+      />
     </template>
 
     <!--date picker-->
@@ -28,12 +29,15 @@
 </template>
 
 <script lang="ts">
-import { Component, VModel, Vue } from "vue-property-decorator";
+import { Component, VModel, Prop, Vue } from "vue-property-decorator";
 import moment from "moment";
 
 @Component
 export default class DateTimePicker extends Vue {
+  //date has to be string in ISO8601 format ("2023-01-11T19:52:40.000+00:00")
   @VModel({ required: true }) date!: string;
+
+  @Prop({ default: false }) loading!: boolean;
 
   private showMenu = false;
   private showTimePicker = false;
@@ -42,20 +46,22 @@ export default class DateTimePicker extends Vue {
     return moment(this.date).format("D. M. YYYY H:mm");
   }
 
+  //date picker accept date in yyyy-MM-DD format, this extract that from date
   get dateLocal(): string {
     return moment(this.date).format("yyyy-MM-DD");
   }
 
   set dateLocal(value: string) {
-    this.$emit("input", value + this.date.substr(10, this.date.length - 10));
     this.showTimePicker = true;
+    this.$emit("input", value + this.date.substr(10, this.date.length - 10));
   }
 
-  //get time in format h:mm but recalculate it to local timezone
+  //time picker accept time in format H:mm, this extract that from date and adjust to local timezone
   get timeLocal(): string {
     return moment(this.date).format("H:mm");
   }
 
+  //set time from calendar, adjust timezone
   set timeLocal(value: string) {
     const hourInt =
       parseInt(value.substr(0, 2)) + new Date().getTimezoneOffset() / 60;

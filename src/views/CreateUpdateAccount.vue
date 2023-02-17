@@ -1,7 +1,8 @@
 <template>
   <section class="max-width main">
+    <!--dialog for deleting account-->
     <ConfirmationDialog
-      :show.sync="showDialog"
+      :show.sync="showDeleteDialog"
       :label="`Really delete '${account.name}'`"
       @confirm="deleteAccount"
     />
@@ -24,7 +25,7 @@
           prepend-icon="mdi-wallet-outline"
           class="input"
           required
-        ></v-text-field>
+        />
       </div>
 
       <!--2nd row-->
@@ -40,7 +41,7 @@
           class="input"
           type="number"
           required
-        ></v-text-field>
+        />
 
         <!--currency-->
         <v-text-field
@@ -53,9 +54,10 @@
           prepend-icon="mdi-currency-eur"
           class="input"
           required
-        ></v-text-field>
+        />
       </div>
 
+      <!--3rd row-->
       <div class="row">
         <!--color-->
         <ColorSelect
@@ -79,7 +81,7 @@
           v-model="account.includeInStatistic"
           label="Include in statistic"
           class="input"
-        ></v-checkbox>
+        />
 
         <!--buttons-->
         <div>
@@ -89,7 +91,7 @@
             :loading="deleteLoading"
             color="red"
             class="white--text ml-4"
-            @click="showDialog = true"
+            @click="showDeleteDialog = true"
           >
             <v-icon left>mdi-trash-can-outline</v-icon>
             Delete
@@ -130,26 +132,27 @@ import { Action } from "vuex-class";
 export default class CreateUpdateAccount extends Vue {
   @Prop({ default: false }) update!: boolean;
 
-  accountId = null as null | string;
+  accountId = null as null | string; //used when updating existing account
   submitLoading = false;
   accountLoading = false;
   deleteLoading = false;
-  maxLength = 40;
+  maxLength = 40; //max length of inputs
   maxLengthFieldErrorMsg =
     "Must be less than " + this.maxLength + " characters";
   fieldRequiredErrorMsg = "This field is required.";
-  showDialog = false;
+  showDeleteDialog = false;
 
   account = {
     id: null,
     name: "",
     balance: 0,
     currency: "CZK",
-    color: "#6290ff",
+    color: "#6290ff", //blue
     icon: "mdi-piggy-bank-outline",
     includeInStatistic: true,
   } as CreateUpdateAccountRequest;
 
+  //input validation rules
   rules = {
     requiredAndMaxLength: [
       (value: string): boolean | string =>
@@ -184,9 +187,11 @@ export default class CreateUpdateAccount extends Vue {
 
   //submit form
   submit(): void {
+    this.submitLoading = true;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     if (!this.$refs["form"]?.validate()) {
+      this.submitLoading = false;
       return;
     }
     if (this.update) {

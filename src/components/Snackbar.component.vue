@@ -13,6 +13,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Getter, Mutation } from "vuex-class";
 
+//global snackbar used for displaying error messages, get data from vuex
 @Component
 export default class Snackbar extends Vue {
   @Getter("snackbar/show") show!: boolean;

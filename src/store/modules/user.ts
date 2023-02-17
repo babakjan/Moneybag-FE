@@ -26,6 +26,7 @@ const user = {
       state.user = user;
       state.token = token;
     },
+    //set user to null
     logOut: (state: State): void => {
       state.user = null;
     },
@@ -34,6 +35,7 @@ const user = {
     user: (state: State): User | null => {
       return state.user;
     },
+    //if user is logged in or not
     loggedIn: (state: State): boolean => {
       return state.user != null;
     },

@@ -38,7 +38,11 @@ const AccountApi = {
   API: new API(),
   DOMAIN: "/accounts",
 
-  //get all
+  /**
+   * get all accounts of signed user
+   * @param withIncomesAndExpenses if yes accounts contain incomes and expenses from current month,
+   * otherwise incomes and expenses are null
+   */
   getAll(withIncomesAndExpenses = false): Promise<Response<Account[]>> {
     const userId = this.API.getUserId();
     if (!userId) {
@@ -49,35 +53,50 @@ const AccountApi = {
     ]);
   },
 
-  //get by id
+  /**
+   * get account by id
+   * @param id account id
+   */
   getById(id: string): Promise<Response<Account>> {
     return this.API.get(`${this.DOMAIN}/${id}`);
   },
 
-  //create
-  createAccount(data: CreateUpdateAccountRequest): Promise<Response<Account>> {
-    const userId = this.API.getUserId();
-    if (!userId) {
-      return Promise.reject("User id not found, login again.");
-    }
-    data.userId = userId;
-    return this.API.post(this.DOMAIN, data);
-  },
-
-  //update
-  updateAccount(
-    id: string,
-    data: CreateUpdateAccountRequest
+  /**
+   * crete new account
+   * @param account account data
+   */
+  createAccount(
+    account: CreateUpdateAccountRequest
   ): Promise<Response<Account>> {
     const userId = this.API.getUserId();
     if (!userId) {
       return Promise.reject("User id not found, login again.");
     }
-    data.userId = userId;
-    return this.API.put(`${this.DOMAIN}/${id}`, data);
+    account.userId = userId;
+    return this.API.post(this.DOMAIN, account);
   },
 
-  //delete
+  /**
+   * update existing account
+   * @param id account id
+   * @param account account data
+   */
+  updateAccount(
+    id: string,
+    account: CreateUpdateAccountRequest
+  ): Promise<Response<Account>> {
+    const userId = this.API.getUserId();
+    if (!userId) {
+      return Promise.reject("User id not found, login again.");
+    }
+    account.userId = userId;
+    return this.API.put(`${this.DOMAIN}/${id}`, account);
+  },
+
+  /**
+   * delete existing account
+   * @param id account id
+   */
   deleteAccount(id: string): Promise<Response> {
     return this.API.delete(`${this.DOMAIN}/${id}`);
   },

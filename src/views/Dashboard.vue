@@ -11,7 +11,7 @@ import AccountsSection from "@/components/dahboard/AccountSection.component.vue"
 import RecordsSection from "@/components/dahboard/RecordsSection.component.vue";
 
 @Component({
-  components: { AccountsSection: AccountsSection, RecordsSection },
+  components: { AccountsSection, RecordsSection },
 })
 export default class Dashboard extends Vue {}
 </script>

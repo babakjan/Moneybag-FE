@@ -15,7 +15,7 @@ interface AuthenticationRequest {
 }
 
 interface AuthenticationResponse {
-  token: string;
+  token: string; //JWT token
   user: User;
 }
 
@@ -23,13 +23,22 @@ const AuthentizationApi = {
   API: new API(),
   DOMAIN: "/auth",
 
-  register(data: RegisterRequest): Promise<Response<AuthenticationResponse>> {
-    return this.API.post(this.DOMAIN + "/register", data);
+  /**
+   * register new user
+   * @param user user data
+   */
+  register(user: RegisterRequest): Promise<Response<AuthenticationResponse>> {
+    return this.API.post(this.DOMAIN + "/register", user);
   },
+
+  /**
+   * authenticate registered user
+   * @param request request data
+   */
   authenticate(
-    data: AuthenticationRequest
+    request: AuthenticationRequest
   ): Promise<Response<AuthenticationResponse>> {
-    return this.API.post(this.DOMAIN + "/authenticate", data);
+    return this.API.post(this.DOMAIN + "/authenticate", request);
   },
 };
 

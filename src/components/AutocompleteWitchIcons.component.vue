@@ -48,7 +48,7 @@ enum ItemsType {
 
 @Component
 export default class AutocompleteWitchIcons extends Vue {
-  @VModel({ type: Number }) selectedItem: number | undefined;
+  @VModel({ type: Number }) selectedItem: number | undefined; //id of selected item
 
   @Prop({ required: true }) itemsType!: ItemsType;
   @Prop({ default: "" }) label!: string;
