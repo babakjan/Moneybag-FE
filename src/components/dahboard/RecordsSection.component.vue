@@ -32,6 +32,10 @@
             class="skeleton"
           />
         </div>
+
+        <div class="more-records">
+          <router-link to="/records" class="">More records</router-link>
+        </div>
       </div>
 
       <div v-else class="bigger-text">You haven't created any records yet!</div>
@@ -68,8 +72,8 @@ export default class RecordsSection extends Vue {
   createdOrActivated(): void {
     this.recordsLoading = true;
     recordApi
-      .getAll([{ name: "sort", value: "date,desc" }])
-      .then((response) => (this.records = response.data))
+      .getAll(0, 20, [{ name: "sort", value: "date,desc" }])
+      .then((response) => (this.records = response.data.items))
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.recordsLoading = false));
   }
@@ -80,5 +84,12 @@ export default class RecordsSection extends Vue {
 .skeleton {
   height: 5.5rem;
   margin-bottom: 1rem;
+}
+
+.more-records {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
 }
 </style>

@@ -1,5 +1,5 @@
 import { AxiosResponse as Response } from "axios";
-import API from "@/api/api";
+import API, { PaginatedResponse } from "@/api/api";
 import { ApiParameter } from "@/api/api";
 import { Category } from "@/api/categoryApi";
 import { AccountReduced } from "@/api/accountApi";
@@ -30,14 +30,22 @@ const RecordApi = {
 
   /**
    * get all record
-   * @param parameters e.g. filtering and sorting
+   * @param page number of page (indexed from 0)
+   * @param size number of items per page
+   * @param parameters e.g. filtering and sorting, pagination
    */
-  getAll(parameters = [] as ApiParameter[]): Promise<Response<Record[]>> {
+  getAll(
+    page = 0,
+    size = 200,
+    parameters = [] as ApiParameter[]
+  ): Promise<Response<PaginatedResponse<Record>>> {
     const userId = this.API.getUserId();
     if (!userId) {
       return Promise.reject("User id not found, login again.");
     }
     parameters.push({ name: "userId", value: userId });
+    parameters.push({ name: "page", value: page });
+    parameters.push({ name: "size", value: size });
     return this.API.get(this.DOMAIN, parameters);
   },
 

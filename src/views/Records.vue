@@ -24,8 +24,12 @@
       :headers="tableHeaders"
       :loading="recordsLoading"
       :single-expand="true"
+      :options.sync="pagination"
+      :server-items-length="pagination.itemsLength"
+      :footer-props="{ itemsPerPageOptions: [15, 20, 50] }"
       show-expand
       class="elevation-1"
+      @update:options="getRecords"
     >
       <!--label-->
       <template #item.label="{ item }">
@@ -102,6 +106,7 @@ import errorMessage from "@/services/errorMessage";
 import ChipWithIcon from "@/components/ChipWithIcon.component.vue";
 import { formatDateAndTime } from "@/utils/formatDate";
 import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
+import VuetifyDataTablePagination from "@/definitions/VuetifyDataTablePagination";
 
 @Component({
   components: { ChipWithIcon, ConfirmationDialog },
@@ -112,6 +117,15 @@ export default class Records extends Vue {
   showDialog = false;
   recordToDelete = null as null | Record; //record, which will be deleted
 
+  pagination = {
+    page: 1,
+    itemsPerPage: 15,
+    pageCount: 1,
+    itemsLength: 0,
+    sortBy: ["date"],
+    sortDesc: [true],
+  } as VuetifyDataTablePagination;
+
   tableHeaders = [
     {
       text: "",
@@ -120,31 +134,28 @@ export default class Records extends Vue {
     {
       text: "Label",
       align: "start",
-      sortable: "true",
       value: "label",
     },
     {
       text: "Category",
       align: "start",
-      sortable: "false",
+      sortable: false,
       value: "category",
     },
     {
       text: "Account",
       align: "start",
-      sortable: "false",
+      sortable: false,
       value: "account",
     },
     {
       text: "Date",
       align: "end",
-      sortable: "true",
       value: "date",
     },
     {
       text: "Amount",
       align: "end",
-      sortable: "true",
       value: "amount",
     },
     {
@@ -176,9 +187,18 @@ export default class Records extends Vue {
   //load records from api
   getRecords(): void {
     this.recordsLoading = true;
+    //this.pagination.page - 1, because vuetify indexes from 1
     recordApi
-      .getAll([{ name: "sort", value: "date,desc" }])
-      .then((response) => (this.records = response.data))
+      .getAll(this.pagination.page - 1, this.pagination.itemsPerPage, [
+        { name: "sort", value: this.sortParameterValue },
+      ])
+      .then((response) => {
+        this.records = response.data.items;
+        this.pagination.page = response.data.page + 1; //server index from 0, vuetify from 1
+        this.pagination.itemsPerPage = response.data.size;
+        this.pagination.pageCount = response.data.pageCount;
+        this.pagination.itemsLength = response.data.totalElements;
+      })
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.recordsLoading = false));
   }
@@ -196,10 +216,22 @@ export default class Records extends Vue {
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.recordsLoading = false));
   }
+
+  //sorting parameter for api
+  get sortParameterValue(): string {
+    let sort = "date,desc";
+    if (this.pagination.sortBy.length > 0) {
+      sort = this.pagination.sortBy[0];
+      if (this.pagination.sortDesc[0]) {
+        sort += ",desc";
+      }
+    }
+    return sort;
+  }
 }
 </script>
 
-<!--deliberately not scoped, because otherwise can't modify vuetify classes-->
+<!--deliberately not scoped, because scoped can't modify vuetify classes-->
 <style>
 .v-data-table
   > .v-data-table__wrapper

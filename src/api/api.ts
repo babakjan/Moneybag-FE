@@ -10,6 +10,16 @@ interface ApiParameter {
   value: string | number | boolean;
 }
 
+interface PaginatedResponse<T> {
+  items: T[];
+  page: number; //index from 0
+  size: number;
+  totalElements: number;
+  pageCount: number;
+  pageStart: number;
+  pageStop: number;
+}
+
 class API {
   axiosInstance = axios.create({
     baseURL: process.env.VUE_APP_API_URL,
@@ -103,4 +113,4 @@ class API {
 }
 
 export default API;
-export { ApiParameter };
+export { ApiParameter, PaginatedResponse };
