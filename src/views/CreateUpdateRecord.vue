@@ -135,7 +135,6 @@ export default class CreateUpdateRecord extends Vue {
 
   categoriesItemType = ItemsType.CATEGORY;
   accountsItemType = ItemsType.ACCOUNT;
-
   recordId = null as null | string; //used when updating existing record
   submitLoading = false;
   recordLoading = false;
@@ -228,7 +227,7 @@ export default class CreateUpdateRecord extends Vue {
     this.submitLoading = true;
     recordApi
       .createRecord(this.record)
-      .then(() => this.$router.push("/dashboard"))
+      .then(() => this.$router.go(-1))
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.submitLoading = false));
   }
@@ -243,7 +242,7 @@ export default class CreateUpdateRecord extends Vue {
     }
     recordApi
       .updateRecord(this.recordId, this.record)
-      .then(() => this.$router.push("/dashboard"))
+      .then(() => this.$router.go(-1))
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.submitLoading = false));
   }

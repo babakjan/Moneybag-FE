@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="heading-container">
+    <div class="heading-and-button">
       <!--heading-->
       <h1 class="main">Dashboard</h1>
 
@@ -77,13 +77,6 @@ export default class AccountsSection extends Vue {
 </script>
 
 <style scoped>
-.heading-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
 .accounts > div {
   display: flex;
   justify-content: flex-start;
@@ -101,17 +94,6 @@ export default class AccountsSection extends Vue {
   .accounts > div {
     flex-direction: column;
     align-items: center;
-  }
-}
-
-@media only screen and (max-width: 440px) {
-  .heading-container {
-    flex-direction: column;
-    align-items: start;
-  }
-
-  .heading-container h2 {
-    margin-bottom: 1rem;
   }
 }
 </style>

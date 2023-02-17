@@ -1,7 +1,7 @@
 <template>
   <!--records-->
   <section>
-    <div class="heading-container">
+    <div class="heading-and-button mb-6">
       <h2 class="main">Last records</h2>
       <!--add record-->
       <v-btn color="secondary" @click="$router.push('/records/create')">
@@ -44,7 +44,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Action } from "vuex-class";
-import RecordApi, { Record } from "@/api/recordApi";
+import recordApi, { Record } from "@/api/recordApi";
 import errorMessage from "@/services/errorMessage";
 import RecordCard from "@/components/dahboard/RecordCard.component.vue";
 
@@ -67,7 +67,8 @@ export default class RecordsSection extends Vue {
 
   createdOrActivated(): void {
     this.recordsLoading = true;
-    RecordApi.getAll([{ name: "sort", value: "date,desc" }])
+    recordApi
+      .getAll([{ name: "sort", value: "date,desc" }])
       .then((response) => (this.records = response.data))
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.recordsLoading = false));
@@ -76,26 +77,8 @@ export default class RecordsSection extends Vue {
 </script>
 
 <style scoped>
-.heading-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
 .skeleton {
   height: 5.5rem;
   margin-bottom: 1rem;
-}
-
-@media only screen and (max-width: 440px) {
-  .heading-container {
-    flex-direction: column;
-    align-items: start;
-  }
-
-  .heading-container h1 {
-    margin-bottom: 1rem;
-  }
 }
 </style>

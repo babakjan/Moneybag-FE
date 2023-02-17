@@ -18,7 +18,7 @@
 
       <!--date-->
       <span class="record-date">
-        {{ momentFormatter(record.date).format("D. M. YYYY") }}
+        {{ formattedDateAndTime }}
       </span>
     </div>
 
@@ -49,7 +49,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Record } from "@/api/recordApi";
 import ChipWithIcon from "@/components/ChipWithIcon.component.vue";
-import moment from "moment";
+import { formatDate } from "@/utils/formatDate";
 
 @Component({
   components: { ChipWithIcon },
@@ -57,7 +57,9 @@ import moment from "moment";
 export default class RecordCard extends Vue {
   @Prop({ required: true }) readonly record!: Record;
 
-  momentFormatter = moment;
+  get formattedDateAndTime(): string {
+    return formatDate(this.record.date);
+  }
 }
 </script>
 
