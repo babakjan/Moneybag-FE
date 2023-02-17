@@ -68,7 +68,7 @@ export default class AccountsSection extends Vue {
 
   createdOrActivated(): void {
     this.accountsLoading = true;
-    AccountApi.getUserAccountsWithIncomesAndExpenses()
+    AccountApi.getAll(true)
       .then((response) => (this.accounts = response.data))
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.accountsLoading = false));
@@ -114,7 +114,7 @@ export default class AccountsSection extends Vue {
     align-items: start;
   }
 
-  .heading-container h1 {
+  .heading-container h2 {
     margin-bottom: 1rem;
   }
 }

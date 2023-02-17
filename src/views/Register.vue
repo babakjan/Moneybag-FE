@@ -8,7 +8,7 @@
           <!--first name-->
           <v-text-field
             v-model="registerForm.firstName"
-            :rules="rules.firstName"
+            :rules="rules.requiredAndMaxLength"
             :counter="maxLength"
             label="First Name"
             placeholder="John"
@@ -19,7 +19,7 @@
           <!--last name-->
           <v-text-field
             v-model="registerForm.lastName"
-            :rules="rules.lastName"
+            :rules="rules.requiredAndMaxLength"
             :counter="maxLength"
             label="Last Name"
             placeholder="Doe"
@@ -30,7 +30,7 @@
           <!--email-->
           <v-text-field
             v-model="registerForm.email"
-            :rules="rules.email"
+            :rules="[...rules.requiredAndMaxLength, ...rules.email]"
             :counter="maxLength"
             label="Email"
             placeholder="johndoe@gmail.com"
@@ -41,7 +41,7 @@
           <!--password-->
           <v-text-field
             v-model="registerForm.password"
-            :rules="rules.password"
+            :rules="[...rules.requiredAndMaxLength, ...rules.password]"
             :counter="maxLength"
             :type="showPassword ? 'text' : 'password'"
             label="Password"
@@ -89,51 +89,28 @@ export default class Register extends Vue {
   formValid = false;
   formLoading = false;
   maxLength = 40;
-  maxLengthFieldErrorMsg = "Must be less than " + this.maxLength + "characters";
+  maxLengthFieldErrorMsg =
+    "Must be less than " + this.maxLength + " characters";
   fieldRequiredErrorMsg = "This field is required.";
   showPassword = false;
   emailPattern =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   rules = {
-    firstName: [
-      (): boolean | string =>
-        !!this.registerForm.firstName || this.fieldRequiredErrorMsg,
-      (): boolean | string =>
-        !!this.registerForm.firstName ||
-        this.registerForm.firstName.length <= this.maxLength ||
-        this.maxLengthFieldErrorMsg,
-    ],
-    lastName: [
-      (): boolean | string =>
-        !!this.registerForm.lastName || this.fieldRequiredErrorMsg,
-      (): boolean | string =>
-        !!this.registerForm.lastName ||
-        this.registerForm.lastName.length <= this.maxLength ||
+    requiredAndMaxLength: [
+      (value: string): boolean | string =>
+        !!value || this.fieldRequiredErrorMsg,
+      (value: string): boolean | string =>
+        (!!value && value.length <= this.maxLength) ||
         this.maxLengthFieldErrorMsg,
     ],
     email: [
-      (): boolean | string =>
-        !!this.registerForm.email || this.fieldRequiredErrorMsg,
-      (): boolean | string =>
-        this.emailPattern.test(this.registerForm.email) ||
-        "E-mail is not valid",
-      (): boolean | string =>
-        (!!this.registerForm.email &&
-          this.registerForm.email.length <= this.maxLength) ||
-        this.maxLengthFieldErrorMsg,
+      (value: string): boolean | string =>
+        this.emailPattern.test(value) || "E-mail is not valid",
     ],
     password: [
-      (): boolean | string =>
-        !!this.registerForm.password || this.fieldRequiredErrorMsg,
-      (): boolean | string =>
-        (!!this.registerForm.password &&
-          this.registerForm.password.length <= this.maxLength) ||
-        this.maxLengthFieldErrorMsg,
-      (): boolean | string =>
-        (!!this.registerForm.password &&
-          this.registerForm.password.length >= 8) ||
-        "Password length must be at least 8",
+      (value: string): boolean | string =>
+        (!!value && value.length >= 8) || "Password length must be at least 8",
     ],
   };
 

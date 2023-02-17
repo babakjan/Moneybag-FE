@@ -38,20 +38,20 @@ const AccountApi = {
   API: new API(),
   DOMAIN: "/accounts",
 
-  //get all with incomes and expenses
-  getUserAccountsWithIncomesAndExpenses(): Promise<Response<Account[]>> {
+  //get all
+  getAll(withIncomesAndExpenses = false): Promise<Response<Account[]>> {
     const userId = this.API.getUserId();
     if (!userId) {
       return Promise.reject("User id not found, login again.");
     }
-    return this.API.get("/users/" + userId + "/accounts", [
-      { name: "withIncomesAndExpenses", value: true },
+    return this.API.get(`/users/${userId}/accounts`, [
+      { name: "withIncomesAndExpenses", value: withIncomesAndExpenses },
     ]);
   },
 
   //get by id
   getById(id: string): Promise<Response<Account>> {
-    return this.API.get(this.DOMAIN + `/${id}`);
+    return this.API.get(`${this.DOMAIN}/${id}`);
   },
 
   //create
@@ -74,12 +74,12 @@ const AccountApi = {
       return Promise.reject("User id not found, login again.");
     }
     data.userId = userId;
-    return this.API.put(this.DOMAIN + `/${id}`, data);
+    return this.API.put(`${this.DOMAIN}/${id}`, data);
   },
 
   //delete
   deleteAccount(id: string): Promise<Response> {
-    return this.API.delete(this.DOMAIN + `/${id}`);
+    return this.API.delete(`${this.DOMAIN}/${id}`);
   },
 };
 

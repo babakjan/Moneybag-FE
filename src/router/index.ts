@@ -37,7 +37,31 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/CreateUpdateAccount.vue"),
     meta: {
       requiresAuth: true,
-      title: "Edit account",
+      title: "Update account",
+    },
+    props: {
+      update: true,
+    },
+  },
+  {
+    path: "/records/create",
+    name: "CreateRecord",
+    component: () => import("../views/CreateUpdateRecord.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+    props: {
+      update: false,
+      title: "Create record",
+    },
+  },
+  {
+    path: "/records/:recordId",
+    name: "UpdateRecord",
+    component: () => import("../views/CreateUpdateRecord.vue"),
+    meta: {
+      requiresAuth: true,
+      title: "Update record",
     },
     props: {
       update: true,

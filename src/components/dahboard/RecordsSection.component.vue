@@ -1,7 +1,15 @@
 <template>
   <!--records-->
   <section>
-    <h2 class="main pb-4">Last records</h2>
+    <div class="heading-container">
+      <h2 class="main pb-4">Last records</h2>
+      <!--add account-->
+      <v-btn color="secondary" @click="$router.push('/records/create')">
+        <v-icon left>mdi-plus</v-icon>
+        <span>Add record</span>
+      </v-btn>
+    </div>
+
     <RecordCard
       v-for="record in records"
       :key="`record${record.id}`"
@@ -37,7 +45,7 @@ export default class RecordsSection extends Vue {
 
   createdOrActivated(): void {
     this.recordsLoading = true;
-    RecordApi.getAll()
+    RecordApi.getAll([{ name: "sort", value: "date,desc" }])
       .then((response) => (this.records = response.data))
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.recordsLoading = false));
@@ -45,4 +53,22 @@ export default class RecordsSection extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.heading-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+@media only screen and (max-width: 440px) {
+  .heading-container {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .heading-container h1 {
+    margin-bottom: 1rem;
+  }
+}
+</style>

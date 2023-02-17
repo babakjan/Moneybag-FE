@@ -16,7 +16,7 @@
         <!--name-->
         <v-text-field
           v-model="account.name"
-          :rules="rules.name"
+          :rules="rules.requiredAndMaxLength"
           :counter="maxLength"
           :loading="accountLoading"
           label="Name"
@@ -45,7 +45,7 @@
         <!--currency-->
         <v-text-field
           v-model="account.currency"
-          :rules="rules.currency"
+          :rules="rules.requiredAndMaxLength"
           :counter="maxLength"
           :loading="accountLoading"
           label="Currency"
@@ -135,7 +135,8 @@ export default class CreateUpdateAccount extends Vue {
   accountLoading = false;
   deleteLoading = false;
   maxLength = 40;
-  maxLengthFieldErrorMsg = "Must be less than " + this.maxLength + "characters";
+  maxLengthFieldErrorMsg =
+    "Must be less than " + this.maxLength + " characters";
   fieldRequiredErrorMsg = "This field is required.";
   showDialog = false;
 
@@ -150,26 +151,16 @@ export default class CreateUpdateAccount extends Vue {
   } as CreateUpdateAccountRequest;
 
   rules = {
-    name: [
-      (): boolean | string => !!this.account.name || this.fieldRequiredErrorMsg,
-      (): boolean | string =>
-        !!this.account.name ||
-        this.account.name.length <= this.maxLength ||
+    requiredAndMaxLength: [
+      (value: string): boolean | string =>
+        !!value || this.fieldRequiredErrorMsg,
+      (value: string): boolean | string =>
+        (!!value && value.length <= this.maxLength) ||
         this.maxLengthFieldErrorMsg,
     ],
     balance: [
-      (): boolean | string =>
-        !!this.account.balance ||
-        this.account.balance === 0 ||
-        this.fieldRequiredErrorMsg,
-    ],
-    currency: [
-      (): boolean | string =>
-        !!this.account.currency || this.fieldRequiredErrorMsg,
-      (): boolean | string =>
-        !!this.account.currency ||
-        this.account.currency.length <= this.maxLength ||
-        this.maxLengthFieldErrorMsg,
+      (value: number): boolean | string =>
+        !!value || value === 0 || this.fieldRequiredErrorMsg,
     ],
   };
 
@@ -216,8 +207,6 @@ export default class CreateUpdateAccount extends Vue {
     accountApi
       .getById(this.accountId)
       .then((response) => {
-        this.account.name = response.data.name; //without this input takes name as empty
-        this.account.balance = response.data.balance; //same as above
         this.account = response.data;
       })
       .catch((error) => this.showSnack(errorMessage.get(error)))
@@ -229,9 +218,7 @@ export default class CreateUpdateAccount extends Vue {
     this.submitLoading = true;
     accountApi
       .createAccount(this.account)
-      .then(() => {
-        this.$router.push("/dashboard");
-      })
+      .then(() => this.$router.push("/dashboard"))
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.submitLoading = false));
   }

@@ -1,5 +1,10 @@
 <template>
-  <v-card class="elevation-2 records px-6 py-2">
+  <v-card
+    class="elevation-2 records px-6 py-2"
+    @click="
+      $router.push({ name: 'UpdateRecord', params: { recordId: record.id } })
+    "
+  >
     <div class="row">
       <div>
         <!--name-->
@@ -12,7 +17,9 @@
       </div>
 
       <!--date-->
-      <span class="record-date">{{ formatDate(record.date) }}</span>
+      <span class="record-date">{{
+        momentFormater(record.date).format("D. M. YYYY")
+      }}</span>
     </div>
 
     <!--note on mobile-->
@@ -42,7 +49,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Record } from "@/api/recordApi";
 import ChipWithIcon from "@/components/ChipWithIcon.component.vue";
-import { formatDateYYYYMD } from "@/utils/formatDate";
+import moment from "moment";
 
 @Component({
   components: { ChipWithIcon },
@@ -50,7 +57,7 @@ import { formatDateYYYYMD } from "@/utils/formatDate";
 export default class RecordCard extends Vue {
   @Prop({ required: true }) readonly record!: Record;
 
-  formatDate = formatDateYYYYMD;
+  momentFormater = moment;
 }
 </script>
 
