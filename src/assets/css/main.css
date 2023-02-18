@@ -29,6 +29,10 @@ section.main {
     margin-bottom: 2rem;
 }
 
+.v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content {
+    box-shadow: none !important;
+}
+
 @media only screen and (max-width: 1440px) {
     .max-width {
         max-width: 90vw;

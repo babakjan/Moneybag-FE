@@ -140,7 +140,7 @@
       <!--note-->
       <template #expanded-item="{ headers, item }">
         <td :colspan="headers.length">
-          <span class="font-weight-bold">Note:</span>
+          <span class="font-weight-bold ml-4">Note:</span>
           {{ item.note }}
         </td>
       </template>
@@ -402,8 +402,7 @@ export default class Records extends Vue {
 }
 </script>
 
-<!--deliberately not scoped, because scoped can't modify vuetify classes-->
-<style>
+<style scoped>
 .filters {
   display: flex;
   justify-content: space-between;
@@ -414,13 +413,6 @@ export default class Records extends Vue {
 
 .filter-input {
   width: 100%;
-}
-
-.v-data-table
-  > .v-data-table__wrapper
-  tbody
-  tr.v-data-table__expanded__content {
-  box-shadow: none !important;
 }
 
 @media only screen and (max-width: 900px) {
