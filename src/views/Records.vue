@@ -108,26 +108,31 @@
       </template>
 
       <!--label-->
+      <!--eslint-disable-next-line-->
       <template #item.label="{ item }">
         <span class="font-weight-bold">{{ item.label }}</span>
       </template>
 
       <!--category-->
+      <!--eslint-disable-next-line-->
       <template #item.category="{ item }">
         <ChipWithIcon :config="item.category" />
       </template>
 
       <!--account-->
+      <!--eslint-disable-next-line-->
       <template #item.account="{ item }">
         <ChipWithIcon :config="item.account" />
       </template>
 
       <!--date-->
+      <!--eslint-disable-next-line-->
       <template #item.date="{ item }">
         {{ formatDateAndTime(item.date) }}
       </template>
 
       <!--amount-->
+      <!--eslint-disable-next-line-->
       <template #item.amount="{ item }">
         <span
           class="font-weight-bold"
@@ -146,6 +151,7 @@
       </template>
 
       <!--actions-->
+      <!--eslint-disable-next-line-->
       <template #item.actions="{ item }">
         <!--delete-->
         <v-icon

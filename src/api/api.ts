@@ -39,6 +39,7 @@ class API {
 
   post(
     path: string,
+    // eslint-disable-next-line
     data: any,
     parameters = [] as ApiParameter[]
   ): Promise<Response> {
@@ -55,6 +56,7 @@ class API {
 
   put(
     path: string,
+    // eslint-disable-next-line
     data: any,
     parameters = [] as ApiParameter[]
   ): Promise<Response> {
