@@ -1,5 +1,9 @@
 <template>
-  <v-dialog v-model="showMenu" :close-on-content-click="false" max-width="310">
+  <v-dialog
+    v-model="showDialog"
+    :close-on-content-click="false"
+    max-width="310"
+  >
     <!--input-->
     <template v-slot:activator="{ on }">
       <v-text-field
@@ -22,7 +26,7 @@
       format="24hr"
       @click:minute="
         showTimePicker = false;
-        showMenu = false;
+        showDialog = false;
       "
     />
   </v-dialog>
@@ -39,7 +43,7 @@ export default class DateTimePicker extends Vue {
 
   @Prop({ default: false }) loading!: boolean;
 
-  private showMenu = false;
+  private showDialog = false;
   private showTimePicker = false;
 
   private get formattedDate(): string {

@@ -63,7 +63,7 @@
         <!--category-->
         <AutocompleteWitchIcons
           v-model="record.categoryId"
-          :items-type="categoriesItemType"
+          :items-type="itemType.CATEGORY"
           :required="true"
           label="Category"
           prepend-icon="mdi-shape-outline"
@@ -73,7 +73,7 @@
         <!--account-->
         <AutocompleteWitchIcons
           v-model="record.accountId"
-          :items-type="accountsItemType"
+          :items-type="itemType.ACCOUNT"
           :required="true"
           label="Account"
           prepend-icon="mdi-bank-outline"
@@ -123,18 +123,21 @@ import recordApi, { CreateUpdateRecordRequest } from "@/api/recordApi";
 import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
 import { Action } from "vuex-class";
 import errorMessage from "@/services/errorMessage";
-import AutocompleteWitchIcons from "@/components/AutocompleteWitchIcons.component.vue";
-import { ItemsType } from "@/components/AutocompleteWitchIcons.component.vue";
+import AutocompleteWithIcons from "@/components/AutocompleteWithIcons.component.vue";
+import { ItemsType } from "@/components/AutocompleteWithIcons.component.vue";
 import DateTimePicker from "@/components/DateTimePicker.component.vue";
 
 @Component({
-  components: { ConfirmationDialog, AutocompleteWitchIcons, DateTimePicker },
+  components: {
+    ConfirmationDialog,
+    AutocompleteWitchIcons: AutocompleteWithIcons,
+    DateTimePicker,
+  },
 })
 export default class CreateUpdateRecord extends Vue {
   @Prop({ default: false }) update!: boolean;
 
-  categoriesItemType = ItemsType.CATEGORY;
-  accountsItemType = ItemsType.ACCOUNT;
+  itemType = ItemsType;
   recordId = null as null | string; //used when updating existing record
   submitLoading = false;
   recordLoading = false;

@@ -1,5 +1,5 @@
 <template>
-  <section class="max-width main">
+  <section class="max-width main" @keyup.enter="getRecords">
     <!--dialog for deleting record-->
     <ConfirmationDialog
       :show.sync="showDialog"
@@ -27,10 +27,86 @@
       :options.sync="pagination"
       :server-items-length="pagination.itemsLength"
       :footer-props="{ itemsPerPageOptions: [15, 20, 50] }"
+      mobile-breakpoint="900"
       show-expand
-      class="elevation-1"
+      class="elevation-1 mb-8"
       @update:options="getRecords"
     >
+      <template #top>
+        <!--filters-->
+        <div class="filters">
+          <!--label-->
+          <div class="filter-input">
+            <v-text-field
+              v-model="filterValues.label"
+              label="Label"
+              placeholder="Iphone"
+              clearable
+              class="mr-0 pr-0"
+              @blur="getRecords"
+              hint="Hit enter to search"
+              @click:clear="
+                filterValues.label = '';
+                getRecords();
+              "
+            />
+          </div>
+
+          <!--category-->
+          <div class="filter-input">
+            <AutocompleteWithIcons
+              v-model="filterValues.categoryId"
+              :items-type="itemType.CATEGORY"
+              label="Category"
+              class="pt-4 ma-0"
+              clearable
+              @input="getRecords"
+            />
+          </div>
+
+          <!--account-->
+          <div class="filter-input">
+            <AutocompleteWithIcons
+              v-model="filterValues.accountId"
+              :items-type="itemType.ACCOUNT"
+              label="Account"
+              class="pt-4 ma-0"
+              clearable
+              @input="getRecords"
+            />
+          </div>
+
+          <!--date interval-->
+          <div class="filter-input">
+            <DateIntervalPicker
+              v-model="filterValues.dateInterval"
+              @input="getRecords"
+            />
+          </div>
+
+          <!--income type-->
+          <div class="filter-input">
+            <v-autocomplete
+              v-model="filterValues.transactionType"
+              :items="transactionTypes"
+              label="Income / Expense"
+              clearable
+              @input="getRecords"
+            />
+          </div>
+
+          <!--delete filters-->
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon v-bind="attrs" v-on="on" @click="resetFilterValues">
+                mdi-trash-can-outline
+              </v-icon>
+            </template>
+            <span>Delete filters</span>
+          </v-tooltip>
+        </div>
+      </template>
+
       <!--label-->
       <template #item.label="{ item }">
         <span class="font-weight-bold">{{ item.label }}</span>
@@ -102,14 +178,23 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Action } from "vuex-class";
 import recordApi, { Record } from "@/api/recordApi";
+import { ApiParameter } from "@/api/api";
 import errorMessage from "@/services/errorMessage";
-import ChipWithIcon from "@/components/ChipWithIcon.component.vue";
 import { formatDateAndTime } from "@/utils/formatDate";
-import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
 import VuetifyDataTablePagination from "@/definitions/VuetifyDataTablePagination";
+import { ItemsType } from "@/components/AutocompleteWithIcons.component.vue";
+import ChipWithIcon from "@/components/ChipWithIcon.component.vue";
+import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
+import AutocompleteWithIcons from "@/components/AutocompleteWithIcons.component.vue";
+import DateIntervalPicker from "@/components/DateIntervalPicker.component.vue";
 
 @Component({
-  components: { ChipWithIcon, ConfirmationDialog },
+  components: {
+    ChipWithIcon,
+    ConfirmationDialog,
+    AutocompleteWithIcons,
+    DateIntervalPicker,
+  },
 })
 export default class Records extends Vue {
   records = [] as Record[];
@@ -125,6 +210,26 @@ export default class Records extends Vue {
     sortBy: ["date"],
     sortDesc: [true],
   } as VuetifyDataTablePagination;
+  filterValues = {
+    label: null as null | string,
+    categoryId: null as null | number,
+    accountId: null as null | number,
+    transactionType: null as null | string,
+    dateInterval: [] as string[],
+  };
+
+  dates = ["2023-02-01", "2023-02-10"];
+
+  itemType = ItemsType;
+
+  transactionTypeOption = {
+    INCOMES: "incomes",
+    EXPENSES: "expenses",
+  };
+  transactionTypes = [
+    this.transactionTypeOption.INCOMES,
+    this.transactionTypeOption.EXPENSES,
+  ];
 
   tableHeaders = [
     {
@@ -181,16 +286,19 @@ export default class Records extends Vue {
   }
 
   createdOrActivated(): void {
+    this.resetFilterValues();
     this.getRecords();
   }
 
   //load records from api
   getRecords(): void {
+    console.log("get records called");
     this.recordsLoading = true;
     //this.pagination.page - 1, because vuetify indexes from 1
     recordApi
       .getAll(this.pagination.page - 1, this.pagination.itemsPerPage, [
         { name: "sort", value: this.sortParameterValue },
+        ...this.filterParameters,
       ])
       .then((response) => {
         this.records = response.data.items;
@@ -228,15 +336,96 @@ export default class Records extends Vue {
     }
     return sort;
   }
+
+  //reset filter values and update records
+  resetFilterValues(): void {
+    this.filterValues = {
+      label: null,
+      categoryId: null,
+      accountId: null,
+      transactionType: null,
+      dateInterval: [],
+    };
+    this.getRecords();
+  }
+
+  get filterParameters(): ApiParameter[] {
+    let parameters = [];
+
+    if (this.filterValues.dateInterval.length === 2) {
+      parameters.push({
+        name: "dateGt",
+        value: this.filterValues.dateInterval[0],
+      });
+      parameters.push({
+        name: "dateLt",
+        value: this.filterValues.dateInterval[1],
+      });
+    }
+
+    if (
+      this.filterValues.transactionType === this.transactionTypeOption.EXPENSES
+    ) {
+      parameters.push({
+        name: "amountLt",
+        value: 0,
+      });
+    } else if (
+      this.filterValues.transactionType === this.transactionTypeOption.INCOMES
+    ) {
+      parameters.push({
+        name: "amountGt",
+        value: 0,
+      });
+    }
+
+    if (this.filterValues.label) {
+      parameters.push({ name: "label", value: this.filterValues.label });
+    }
+
+    if (this.filterValues.categoryId != null) {
+      parameters.push({
+        name: "categoryId",
+        value: this.filterValues.categoryId,
+      });
+    }
+
+    if (this.filterValues.accountId != null) {
+      parameters.push({
+        name: "accountId",
+        value: this.filterValues.accountId,
+      });
+    }
+
+    return parameters;
+  }
 }
 </script>
 
 <!--deliberately not scoped, because scoped can't modify vuetify classes-->
 <style>
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 2rem 0 2rem;
+}
+
+.filter-input {
+  width: 100%;
+}
+
 .v-data-table
   > .v-data-table__wrapper
   tbody
   tr.v-data-table__expanded__content {
   box-shadow: none !important;
+}
+
+@media only screen and (max-width: 900px) {
+  .filters {
+    flex-direction: column;
+  }
 }
 </style>

@@ -9,6 +9,7 @@
       :prepend-icon="prependIcon ?? ''"
       :loading="itemsLoading"
       :rules="required ? requiredRule : []"
+      :clearable="clearable"
       class="my-input"
     >
       <!--selected item-->
@@ -47,10 +48,11 @@ enum ItemsType {
 }
 
 @Component
-export default class AutocompleteWitchIcons extends Vue {
+export default class AutocompleteWithIcons extends Vue {
   @VModel({ type: Number }) selectedItem: number | undefined; //id of selected item
 
   @Prop({ required: true }) itemsType!: ItemsType;
+  @Prop({ default: false }) clearable!: boolean;
   @Prop({ default: "" }) label!: string;
   @Prop({ default: false }) required!: boolean;
   @Prop({ default: "" }) prependIcon!: string;
