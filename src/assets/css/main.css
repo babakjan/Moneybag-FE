@@ -29,8 +29,14 @@ section.main {
     margin-bottom: 2rem;
 }
 
+/*remove v-data-table expand shadow*/
 .v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content {
     box-shadow: none !important;
+}
+
+/*skeleton loader full height*/
+.v-skeleton-loader__image.v-skeleton-loader__bone { height: 100%; } {
+    height: 100%;
 }
 
 @media only screen and (max-width: 1440px) {

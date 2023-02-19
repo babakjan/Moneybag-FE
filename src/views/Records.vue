@@ -298,7 +298,6 @@ export default class Records extends Vue {
 
   //load records from api
   getRecords(): void {
-    console.log("get records called");
     this.recordsLoading = true;
     //this.pagination.page - 1, because vuetify indexes from 1
     recordApi
