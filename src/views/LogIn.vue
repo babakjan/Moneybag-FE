@@ -51,6 +51,7 @@ import authenticationApi from "@/api/authenticationApi";
 import errorMessage from "@/services/errorMessage";
 import { Mutation, Action } from "vuex-class";
 import { User } from "@/store/modules/user";
+import { Getter } from "vuex-class";
 
 @Component
 export default class LogIn extends Vue {
@@ -74,6 +75,8 @@ export default class LogIn extends Vue {
       !!value || this.fieldRequiredErrorMsg,
   };
 
+  @Getter("user/loggedIn") loggedIn!: boolean;
+
   @Action("snackbar/showSnack") showSnack!: (text: string) => void;
 
   @Mutation("user/setTokenAndUser") setTokenAndUser!: ({
@@ -83,6 +86,13 @@ export default class LogIn extends Vue {
     token: string;
     user: User;
   }) => void;
+
+  //if user is logged in redirect him to dashboard
+  beforeMount(): void {
+    if (this.loggedIn) {
+      this.$router.push("/dashboard");
+    }
+  }
 
   //submit login form
   submit(): void {

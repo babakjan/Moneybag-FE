@@ -1,5 +1,6 @@
 const errorMessage = {
   //error is AxiosError
+  // eslint-disable-next-line
   get(error: any): string {
     let result = "";
     if (error.response.status == 401) {

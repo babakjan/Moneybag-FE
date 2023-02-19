@@ -14,6 +14,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import Navbar from "./components/navigation/Navbar.component.vue";
 import Snackbar from "@/components/Snackbar.component.vue";
+import { Mutation } from "vuex-class";
 
 @Component({
   components: {
@@ -21,5 +22,11 @@ import Snackbar from "@/components/Snackbar.component.vue";
     Snackbar,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  beforeMount(): void {
+    this.loadFromLocalStorage();
+  }
+
+  @Mutation("user/loadFromLocalStorage") loadFromLocalStorage!: () => void;
+}
 </script>
