@@ -73,7 +73,7 @@ export default class RecordsSection extends Vue {
     this.recordsLoading = true;
     recordApi
       .getAll(0, 20, [{ name: "sort", value: "date,desc" }])
-      .then((response) => (this.records = response.data.items))
+      .then((response) => (this.records = response.data.content))
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.recordsLoading = false));
   }

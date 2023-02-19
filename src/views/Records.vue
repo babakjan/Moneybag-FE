@@ -47,7 +47,7 @@
               hint="Hit enter to search"
               @click:clear="
                 filterValues.label = '';
-                getRecords();
+                filterRecords();
               "
             />
           </div>
@@ -60,7 +60,7 @@
               label="Category"
               class="pt-4 ma-0"
               clearable
-              @input="getRecords"
+              @input="filterRecords"
             />
           </div>
 
@@ -72,7 +72,7 @@
               label="Account"
               class="pt-4 ma-0"
               clearable
-              @input="getRecords"
+              @input="filterRecords"
             />
           </div>
 
@@ -80,7 +80,7 @@
           <div class="filter-input">
             <DateIntervalPicker
               v-model="filterValues.dateInterval"
-              @input="getRecords"
+              @input="filterRecords"
             />
           </div>
 
@@ -91,7 +91,7 @@
               :items="transactionTypes"
               label="Income / Expense"
               clearable
-              @input="getRecords"
+              @input="filterRecords"
             />
           </div>
 
@@ -307,10 +307,10 @@ export default class Records extends Vue {
         ...this.filterParameters,
       ])
       .then((response) => {
-        this.records = response.data.items;
-        this.pagination.page = response.data.page + 1; //server index from 0, vuetify from 1
+        this.records = response.data.content;
+        this.pagination.page = response.data.number + 1; //server indexes from 0, vuetify from 1
         this.pagination.itemsPerPage = response.data.size;
-        this.pagination.pageCount = response.data.pageCount;
+        this.pagination.pageCount = response.data.totalPages;
         this.pagination.itemsLength = response.data.totalElements;
       })
       .catch((error) => this.showSnack(errorMessage.get(error)))
@@ -343,6 +343,12 @@ export default class Records extends Vue {
     return sort;
   }
 
+  //filter records - shows results from page 0
+  filterRecords(): void {
+    this.pagination.page = 0;
+    this.getRecords();
+  }
+
   //reset filter values and update records
   resetFilterValues(): void {
     this.filterValues = {
@@ -352,7 +358,7 @@ export default class Records extends Vue {
       transactionType: null,
       dateInterval: [],
     };
-    this.getRecords();
+    this.filterRecords();
   }
 
   get filterParameters(): ApiParameter[] {

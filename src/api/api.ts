@@ -11,13 +11,14 @@ interface ApiParameter {
 }
 
 interface PaginatedResponse<T> {
-  items: T[];
-  page: number; //index from 0
+  content: T[];
+  number: number; // page number (indexed from 0)
   size: number;
   totalElements: number;
-  pageCount: number;
-  pageStart: number;
-  pageStop: number;
+  totalPages: number;
+  last: boolean;
+  first: boolean;
+  empty: boolean;
 }
 
 class API {
