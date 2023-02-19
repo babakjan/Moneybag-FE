@@ -76,6 +76,14 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: "/analytic",
+    name: "Analytic",
+    component: () => import("../views/Analytic.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/register",
     name: "Register",
     component: () => import("../views/Register.vue"),

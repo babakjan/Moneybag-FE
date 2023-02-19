@@ -80,7 +80,7 @@ export default class AccountsSection extends Vue {
 .accounts > div {
   display: flex;
   justify-content: flex-start;
-  align-items: end;
+  align-items: flex-end;
   gap: 2rem;
   flex-wrap: wrap;
 }
