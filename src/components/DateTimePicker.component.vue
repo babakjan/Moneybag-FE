@@ -10,7 +10,7 @@
         v-model="formattedDate"
         :loading="loading"
         label="Date Time Picker"
-        prepend-icon="event"
+        prepend-icon="mdi-calendar-blank-outline"
         readonly
         v-on="on"
       />
