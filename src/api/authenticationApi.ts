@@ -20,7 +20,7 @@ interface AuthenticationResponse {
 }
 
 const AuthentizationApi = {
-  API: new API(),
+  API: API.getInstance(),
   DOMAIN: "/auth",
 
   /**

@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Component, VModel, Vue } from "vue-property-decorator";
 import { formatYYYYMMDD } from "@/utils/formatDate";
-import DateIntervalPicker from "@/components/DateIntervalPicker.component.vue";
+import DateIntervalPicker from "@/components/inputs/DateIntervalPicker.component.vue";
 
 @Component({
   components: { DateIntervalPicker },

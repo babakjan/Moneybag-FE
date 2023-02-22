@@ -15,7 +15,7 @@ interface CategoryAnalytic {
 }
 
 const categoryApi = {
-  API: new API(),
+  API: API.getInstance(),
   DOMAIN: "/categories",
 
   /**

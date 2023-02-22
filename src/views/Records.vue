@@ -188,11 +188,11 @@ import { ApiParameter } from "@/api/api";
 import errorMessage from "@/services/errorMessage";
 import { formatDateAndTime } from "@/utils/formatDate";
 import VuetifyDataTablePagination from "@/definitions/VuetifyDataTablePagination";
-import { ItemsType } from "@/components/AutocompleteWithIcons.component.vue";
+import { ItemsType } from "@/components/inputs/AutocompleteWithIcons.component.vue";
 import ChipWithIcon from "@/components/ChipWithIcon.component.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
-import AutocompleteWithIcons from "@/components/AutocompleteWithIcons.component.vue";
-import DateIntervalPicker from "@/components/DateIntervalPicker.component.vue";
+import AutocompleteWithIcons from "@/components/inputs/AutocompleteWithIcons.component.vue";
+import DateIntervalPicker from "@/components/inputs/DateIntervalPicker.component.vue";
 import getDateIntervalApiParameters from "@/utils/dateIntervalApiParameters";
 
 @Component({

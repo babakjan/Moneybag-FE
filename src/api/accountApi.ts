@@ -35,7 +35,7 @@ interface CreateUpdateAccountRequest {
 }
 
 const AccountApi = {
-  API: new API(),
+  API: API.getInstance(),
   DOMAIN: "/accounts",
 
   /**

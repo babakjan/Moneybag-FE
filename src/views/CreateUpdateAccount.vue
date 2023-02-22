@@ -118,7 +118,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import accountApi, { CreateUpdateAccountRequest } from "@/api/accountApi";
 import errorMessage from "@/services/errorMessage";
 import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
-import ColorSelect from "@/components/ColorSelect.component.vue";
+import ColorSelect from "@/components/inputs/ColorSelect.component.vue";
 import IconSelect from "@/components/IconSelect.component.vue";
 import { Action } from "vuex-class";
 

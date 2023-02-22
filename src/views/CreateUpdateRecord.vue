@@ -123,9 +123,9 @@ import recordApi, { CreateUpdateRecordRequest } from "@/api/recordApi";
 import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
 import { Action } from "vuex-class";
 import errorMessage from "@/services/errorMessage";
-import AutocompleteWithIcons from "@/components/AutocompleteWithIcons.component.vue";
-import { ItemsType } from "@/components/AutocompleteWithIcons.component.vue";
-import DateTimePicker from "@/components/DateTimePicker.component.vue";
+import AutocompleteWithIcons from "@/components/inputs/AutocompleteWithIcons.component.vue";
+import { ItemsType } from "@/components/inputs/AutocompleteWithIcons.component.vue";
+import DateTimePicker from "@/components/inputs/DateTimePicker.component.vue";
 
 @Component({
   components: {

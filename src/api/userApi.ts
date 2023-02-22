@@ -10,7 +10,7 @@ interface TotalAnalytic {
 }
 
 const userApi = {
-  API: new API(),
+  API: API.getInstance(),
   DOMAIN: "/users",
 
   /**

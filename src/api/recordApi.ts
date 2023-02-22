@@ -25,7 +25,7 @@ interface CreateUpdateRecordRequest {
 }
 
 const RecordApi = {
-  API: new API(),
+  API: API.getInstance(),
   DOMAIN: "/records",
 
   /**
