@@ -10,10 +10,13 @@ interface Category {
 
 interface CategoryAnalytic {
   category: Category;
-  amount: number;
-  numberOfRecords: number;
+  amount: number; //sum of record amounts from this category
+  numberOfRecords: number; //number of records in this category
 }
 
+/**
+ * api, which is responsible for requests related to categories
+ */
 const categoryApi = {
   API: API.getInstance(),
   DOMAIN: "/categories",

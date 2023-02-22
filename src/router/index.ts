@@ -101,6 +101,7 @@ const router = new VueRouter({
   routes,
 });
 
+//redirect to login page, if user isn't logged in and trys to access page, which requires authentication
 router.beforeEach((to, from, next) => {
   //if we are on login page, and we are logged in go to dashboard
   if (to.path === "/login" && store.getters["user/loggedIn"]) {

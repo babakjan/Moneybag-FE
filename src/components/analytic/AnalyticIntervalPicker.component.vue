@@ -5,7 +5,7 @@
       label="Interval"
       prepend-icon="mdi-calendar-range"
       :items="options"
-      v-model="valueLocal"
+      v-model="predefinedInterval"
       @input="onInput"
     />
 
@@ -23,12 +23,17 @@ import { Component, VModel, Vue } from "vue-property-decorator";
 import { formatYYYYMMDD } from "@/utils/formatDate";
 import DateIntervalPicker from "@/components/inputs/DateIntervalPicker.component.vue";
 
+/**
+ * analytic interval picker, contains predefined intervals like "this month", "this year", ..., but also custom interval
+ * picker
+ */
 @Component({
   components: { DateIntervalPicker },
 })
 export default class AnalyticIntervalPicker extends Vue {
   @VModel({ required: true }) dateInterval!: string[];
 
+  //predefined intervals
   optionValues = {
     thisMonth: "This month",
     lastMonth: "Last month",
@@ -37,16 +42,22 @@ export default class AnalyticIntervalPicker extends Vue {
     custom: "Custom",
   };
 
-  valueLocal = this.optionValues.thisMonth;
+  predefinedInterval = this.optionValues.thisMonth;
 
+  //get options for autocomplete
   get options(): string[] {
     return Object.values(this.optionValues);
   }
 
+  /**
+   * create date interval from predefined interval
+   * @param value date interval from optionValues
+   */
   onInput(value: string): void {
     const thisMonth = new Date().getMonth();
     const thisYear = new Date().getFullYear();
 
+    //this month
     if (value === this.optionValues.thisMonth) {
       const firstDayOfMonth = new Date(thisYear, thisMonth, 1);
       const lastDayOfMonth = new Date(thisYear, thisMonth + 1, 0);
@@ -57,6 +68,7 @@ export default class AnalyticIntervalPicker extends Vue {
       return;
     }
 
+    //last month
     if (value === this.optionValues.lastMonth) {
       const firstDayOfLastMonth = new Date(thisYear, thisMonth - 1, 1);
       const lastDayOfLastMonth = new Date(thisYear, thisMonth, 0);
@@ -67,6 +79,7 @@ export default class AnalyticIntervalPicker extends Vue {
       return;
     }
 
+    //this year
     if (value === this.optionValues.thisYear) {
       const firstDayOfYear = new Date(thisYear, 0, 1);
       const lastDayOfYear = new Date(thisYear, 11, 31);
@@ -77,6 +90,7 @@ export default class AnalyticIntervalPicker extends Vue {
       return;
     }
 
+    //last year
     if (value === this.optionValues.lastYear) {
       const firstDayOfLastYear = new Date(thisYear - 1, 0, 1);
       const lastDayOfLastYear = new Date(thisYear - 1, 11, 31);
@@ -88,8 +102,9 @@ export default class AnalyticIntervalPicker extends Vue {
     }
   }
 
+  //when user set custom interval on date interval picker, show that on autocomplete
   setToCustomInterval(): void {
-    this.valueLocal = this.optionValues.custom;
+    this.predefinedInterval = this.optionValues.custom;
   }
 }
 </script>
@@ -107,7 +122,5 @@ export default class AnalyticIntervalPicker extends Vue {
     gap: 0;
     padding-bottom: 1rem;
   }
-
-  /*.container >*/
 }
 </style>

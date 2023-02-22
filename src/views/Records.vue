@@ -225,8 +225,6 @@ export default class Records extends Vue {
     dateInterval: [] as string[],
   };
 
-  dates = ["2023-02-01", "2023-02-10"];
-
   itemType = ItemsType;
 
   transactionTypeOption = {
@@ -361,6 +359,7 @@ export default class Records extends Vue {
     this.filterRecords();
   }
 
+  //get filters in form of api parameters
   get filterParameters(): ApiParameter[] {
     let parameters = [];
 

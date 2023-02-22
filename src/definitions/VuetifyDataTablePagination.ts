@@ -1,3 +1,4 @@
+//data for vuetify v-data-table
 interface VuetifyDataTablePagination {
   page: number;
   itemsPerPage: number;

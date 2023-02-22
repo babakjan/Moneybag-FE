@@ -1,6 +1,7 @@
 import API, { ApiParameter } from "@/api/api";
 import { AxiosResponse as Response } from "axios/index";
 
+//total analytic of spending of user
 interface TotalAnalytic {
   incomes: number;
   expenses: number;
@@ -9,6 +10,9 @@ interface TotalAnalytic {
   currency: string;
 }
 
+/**
+ * api, which is responsible for requests related to user
+ */
 const userApi = {
   API: API.getInstance(),
   DOMAIN: "/users",

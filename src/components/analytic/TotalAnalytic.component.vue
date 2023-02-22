@@ -80,6 +80,7 @@ export default class TotalAnalyticComponent extends Vue {
     this.getTotalAnalytic();
   }
 
+  //get data from api
   getTotalAnalytic() {
     this.totalAnalyticLoading = true;
     userApi
@@ -89,6 +90,7 @@ export default class TotalAnalyticComponent extends Vue {
       .finally(() => (this.totalAnalyticLoading = false));
   }
 
+  //when date interval changes, reload data
   @Watch("dateInterval")
   onDateIntervalChange(): void {
     if (this.dateInterval.length === 2) {

@@ -69,6 +69,7 @@ export default class RecordsSection extends Vue {
     this.createdOrActivated();
   }
 
+  //get records from api
   createdOrActivated(): void {
     this.recordsLoading = true;
     recordApi

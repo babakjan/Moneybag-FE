@@ -1,9 +1,13 @@
 <template>
   <div class="container">
     <h2 v-if="!categoryAnalyticLoading" class="main">Categories</h2>
+
+    <!--no date from date interval-->
     <div class="no-records" v-if="categoryAnalytics.length === 0">
       No records between {{ formattedDateInterval }}
     </div>
+
+    <!--pi chart-->
     <apexchart
       v-if="!categoryAnalyticLoading && categoryAnalytics.length > 0"
       type="donut"
@@ -13,6 +17,8 @@
       :series="piChartData.series"
       class="pi-chart"
     />
+
+    <!--skeleton loader-->
     <v-skeleton-loader
       v-if="categoryAnalyticLoading"
       type="image"
@@ -79,6 +85,7 @@ export default class CategoryAnalyticPiChart extends Vue {
     this.getPiChartData();
   }
 
+  //get pi chart data from api
   getPiChartData() {
     this.categoryAnalyticLoading = true;
     categoryApi
@@ -99,6 +106,7 @@ export default class CategoryAnalyticPiChart extends Vue {
       .finally(() => (this.categoryAnalyticLoading = false));
   }
 
+  //when date interval changes, reload data
   @Watch("dateInterval")
   onDateIntervalChange(): void {
     if (this.dateInterval.length === 2) {

@@ -14,6 +14,7 @@ interface Record {
   category: Category;
 }
 
+//create or update record request body
 interface CreateUpdateRecordRequest {
   id: null | number;
   amount: number;
@@ -24,6 +25,9 @@ interface CreateUpdateRecordRequest {
   categoryId: number | null;
 }
 
+/**
+ * api, which is responsible for requests related to records
+ */
 const RecordApi = {
   API: API.getInstance(),
   DOMAIN: "/records",

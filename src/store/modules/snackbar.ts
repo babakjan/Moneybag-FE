@@ -2,8 +2,8 @@ import { Commit } from "vuex";
 
 //global snackbar logic for displaying errors and messages
 class State {
-  show = false;
-  text = "";
+  show = false; //if snackbar is shown or not
+  text = ""; //snackbar text (message)
 }
 
 const snackbar = {

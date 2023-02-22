@@ -15,6 +15,7 @@ interface Account {
   expenses: number | null;
 }
 
+//account, which contains less attributes
 interface AccountReduced {
   id: number;
   name: string;
@@ -23,6 +24,7 @@ interface AccountReduced {
   icon: string;
 }
 
+//create or update account request body
 interface CreateUpdateAccountRequest {
   id: null | number;
   name: string;
@@ -34,13 +36,16 @@ interface CreateUpdateAccountRequest {
   userId: number;
 }
 
+/**
+ * api, which is responsible for requests related to accounts
+ */
 const AccountApi = {
   API: API.getInstance(),
   DOMAIN: "/accounts",
 
   /**
    * get all accounts of signed user
-   * @param withIncomesAndExpenses if yes accounts contain incomes and expenses from current month,
+   * @param withIncomesAndExpenses if yes accounts contain incomes and expenses from current month, default = false
    * otherwise incomes and expenses are null
    */
   getAll(withIncomesAndExpenses = false): Promise<Response<Account[]>> {

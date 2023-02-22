@@ -48,6 +48,7 @@ export default class Analytic extends Vue {
     this.initDateInterval();
   }
 
+  //initialize date interval to this month
   initDateInterval(): void {
     const thisMonth = new Date().getMonth();
     const thisYear = new Date().getFullYear();

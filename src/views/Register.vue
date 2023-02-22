@@ -120,6 +120,7 @@ export default class Register extends Vue {
     user: User;
   }) => void;
 
+  //submit registration form to api
   submit(): void {
     this.formLoading = true;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

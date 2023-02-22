@@ -66,6 +66,7 @@ export default class AccountsSection extends Vue {
     this.createdOrActivated();
   }
 
+  //get accounts from api
   createdOrActivated(): void {
     this.accountsLoading = true;
     AccountApi.getAll(true)

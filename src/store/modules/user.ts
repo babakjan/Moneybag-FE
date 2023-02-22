@@ -9,7 +9,7 @@ interface User {
 
 class State {
   user = null as null | User;
-  token = null as string | null;
+  token = null as string | null; //JWT token
   userLocalStorageKey = "user";
   tokenLocalStorageKey = "token";
   expirationStorageKey = "expiration";
