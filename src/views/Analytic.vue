@@ -1,15 +1,19 @@
 <template>
   <section class="max-width main">
     <h1 class="main mb-8">Analytic</h1>
+
+    <!--interval picker-->
+    <AnalyticIntervalPicker v-model="dateInterval" />
+
     <div class="row">
       <!--spending-->
       <v-card class="card">
-        <TotalAnalyticComponent />
+        <TotalAnalyticComponent :date-interval="dateInterval" />
       </v-card>
 
       <!--pi chart-->
       <v-card class="card">
-        <CategoryAnalyticPiChart />
+        <CategoryAnalyticPiChart :date-interval="dateInterval" />
       </v-card>
     </div>
   </section>
@@ -19,11 +23,19 @@
 import { Component, Vue } from "vue-property-decorator";
 import CategoryAnalyticPiChart from "@/components/analytic/CategoryAnalyticPiChart.component.vue";
 import TotalAnalyticComponent from "@/components/analytic/TotalAnalytic.component.vue";
+import AnalyticIntervalPicker from "@/components/analytic/AnalyticIntervalPicker.component.vue";
+import { formatYYYYMMDD } from "@/utils/formatDate";
 
 @Component({
-  components: { CategoryAnalyticPiChart, TotalAnalyticComponent },
+  components: {
+    CategoryAnalyticPiChart,
+    TotalAnalyticComponent,
+    AnalyticIntervalPicker,
+  },
 })
 export default class Analytic extends Vue {
+  dateInterval = ["", ""];
+
   created(): void {
     this.createdOrActivated();
   }
@@ -33,7 +45,18 @@ export default class Analytic extends Vue {
   }
 
   createdOrActivated(): void {
-    //
+    this.initDateInterval();
+  }
+
+  initDateInterval(): void {
+    const thisMonth = new Date().getMonth();
+    const thisYear = new Date().getFullYear();
+
+    //this month
+    this.dateInterval = [
+      formatYYYYMMDD(new Date(thisYear, thisMonth, 1)),
+      formatYYYYMMDD(new Date(thisYear, thisMonth + 1, 0)),
+    ];
   }
 }
 </script>

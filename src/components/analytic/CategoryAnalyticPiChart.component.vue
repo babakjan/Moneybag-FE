@@ -1,29 +1,41 @@
 <template>
   <div class="container">
-    <h2 v-if="!recordsAnalyticByCategoryLoading" class="main">Categories</h2>
+    <h2 v-if="!categoryAnalyticLoading" class="main">Categories</h2>
+    <div class="no-records" v-if="categoryAnalytics.length === 0">
+      No records between {{ formattedDateInterval }}
+    </div>
     <apexchart
-      v-if="!recordsAnalyticByCategoryLoading"
+      v-if="!categoryAnalyticLoading && categoryAnalytics.length > 0"
       type="donut"
       :width="width"
+      :height="height"
       :options="piChartData.options"
       :series="piChartData.series"
       class="pi-chart"
     />
-    <v-skeleton-loader v-else type="image" class="skeleton" />
+    <v-skeleton-loader
+      v-if="categoryAnalyticLoading"
+      type="image"
+      class="skeleton"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { Action } from "vuex-class";
 import categoryApi, { CategoryAnalytic } from "@/api/categoryApi";
 import errorMessage from "@/services/errorMessage";
+import { ApiParameter } from "@/api/api";
+import { formatDate } from "@/utils/formatDate";
 
 @Component
 export default class CategoryAnalyticPiChart extends Vue {
+  @Prop({ default: () => [] }) dateInterval!: string[];
   @Prop({ default: 500 }) width!: number;
+  @Prop({ default: 286 }) height!: number;
   categoryAnalytics = [] as CategoryAnalytic[];
-  recordsAnalyticByCategoryLoading = false;
+  categoryAnalyticLoading = false;
   piChartData = {
     options: {
       labels: [] as string[],
@@ -45,6 +57,14 @@ export default class CategoryAnalyticPiChart extends Vue {
     series: [] as number[],
   };
 
+  get formattedDateInterval() {
+    return (
+      formatDate(this.dateInterval[0]) +
+      " - " +
+      formatDate(this.dateInterval[1])
+    );
+  }
+
   @Action("snackbar/showSnack") showSnack!: (text: string) => void;
 
   created(): void {
@@ -60,9 +80,9 @@ export default class CategoryAnalyticPiChart extends Vue {
   }
 
   getPiChartData() {
-    this.recordsAnalyticByCategoryLoading = true;
+    this.categoryAnalyticLoading = true;
     categoryApi
-      .getAnalytic()
+      .getAnalytic(this.dateIntervalParameters)
       .then((response) => {
         this.categoryAnalytics = response.data;
         this.piChartData.options.labels = this.categoryAnalytics.map(
@@ -76,7 +96,24 @@ export default class CategoryAnalyticPiChart extends Vue {
         );
       })
       .catch((error) => this.showSnack(errorMessage.get(error)))
-      .finally(() => (this.recordsAnalyticByCategoryLoading = false));
+      .finally(() => (this.categoryAnalyticLoading = false));
+  }
+
+  get dateIntervalParameters(): ApiParameter[] {
+    if (this.dateInterval.length == 2) {
+      return [
+        { name: "dateGt", value: this.dateInterval[0] },
+        { name: "dateLt", value: this.dateInterval[1] },
+      ];
+    }
+    return [];
+  }
+
+  @Watch("dateInterval")
+  onDateIntervalChange(): void {
+    if (this.dateInterval.length === 2) {
+      this.getPiChartData();
+    }
   }
 }
 </script>
@@ -105,6 +142,13 @@ h2 {
 .skeleton {
   width: 100%;
   height: 100%;
+}
+
+.no-records {
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media only screen and (max-width: 550px) {

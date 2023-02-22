@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2 v-if="!totalAnalyticLoading" class="main">Spending</h2>
-    <div v-if="!totalAnalyticLoading">
+    <div v-if="!totalAnalyticLoading" class="rows">
       <!--total balance-->
       <div class="row">
         <h3>Total balance:</h3>
@@ -53,13 +53,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import userApi, { TotalAnalytic } from "@/api/userApi";
 import { Action } from "vuex-class";
 import errorMessage from "@/services/errorMessage";
+import { ApiParameter } from "@/api/api";
 
 @Component
 export default class TotalAnalyticComponent extends Vue {
+  @Prop({ default: () => [] }) dateInterval!: string[];
+
   totalAnalyticLoading = false;
   totalAnalytic = null as null | TotalAnalytic;
 
@@ -80,10 +83,27 @@ export default class TotalAnalyticComponent extends Vue {
   getTotalAnalytic() {
     this.totalAnalyticLoading = true;
     userApi
-      .getTotalAnalytic()
+      .getTotalAnalytic(this.dateIntervalParameters)
       .then((response) => (this.totalAnalytic = response.data))
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.totalAnalyticLoading = false));
+  }
+
+  get dateIntervalParameters(): ApiParameter[] {
+    if (this.dateInterval.length == 2) {
+      return [
+        { name: "dateGt", value: this.dateInterval[0] },
+        { name: "dateLt", value: this.dateInterval[1] },
+      ];
+    }
+    return [];
+  }
+
+  @Watch("dateInterval")
+  onDateIntervalChange(): void {
+    if (this.dateInterval.length === 2) {
+      this.getTotalAnalytic();
+    }
   }
 }
 </script>
@@ -92,11 +112,14 @@ export default class TotalAnalyticComponent extends Vue {
 .container {
   width: 100%;
   height: 100%;
+}
+
+.rows {
   padding: 0 2rem 2rem 2rem;
 }
 
 .row {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -133,6 +156,7 @@ h3 {
 
   h2 {
     text-align: start;
+    padding-left: 1rem;
   }
 }
 </style>

@@ -8,4 +8,8 @@ function formatDateAndTime(date: string): string {
   return moment(new Date(date)).format("D. M. YYYY H:mm");
 }
 
-export { formatDate, formatDateAndTime };
+function formatYYYYMMDD(date: Date): string {
+  return moment(date).format("YYYY-MM-DD");
+}
+
+export { formatDate, formatDateAndTime, formatYYYYMMDD };
