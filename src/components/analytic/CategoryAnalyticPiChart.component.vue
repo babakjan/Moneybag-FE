@@ -26,8 +26,8 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { Action } from "vuex-class";
 import categoryApi, { CategoryAnalytic } from "@/api/categoryApi";
 import errorMessage from "@/services/errorMessage";
-import { ApiParameter } from "@/api/api";
 import { formatDate } from "@/utils/formatDate";
+import getDateIntervalApiParameters from "@/utils/dateIntervalApiParameters";
 
 @Component
 export default class CategoryAnalyticPiChart extends Vue {
@@ -82,7 +82,7 @@ export default class CategoryAnalyticPiChart extends Vue {
   getPiChartData() {
     this.categoryAnalyticLoading = true;
     categoryApi
-      .getAnalytic(this.dateIntervalParameters)
+      .getAnalytic(getDateIntervalApiParameters(this.dateInterval))
       .then((response) => {
         this.categoryAnalytics = response.data;
         this.piChartData.options.labels = this.categoryAnalytics.map(
@@ -97,16 +97,6 @@ export default class CategoryAnalyticPiChart extends Vue {
       })
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.categoryAnalyticLoading = false));
-  }
-
-  get dateIntervalParameters(): ApiParameter[] {
-    if (this.dateInterval.length == 2) {
-      return [
-        { name: "dateGt", value: this.dateInterval[0] },
-        { name: "dateLt", value: this.dateInterval[1] },
-      ];
-    }
-    return [];
   }
 
   @Watch("dateInterval")

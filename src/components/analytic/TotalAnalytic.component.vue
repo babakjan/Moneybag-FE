@@ -57,7 +57,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import userApi, { TotalAnalytic } from "@/api/userApi";
 import { Action } from "vuex-class";
 import errorMessage from "@/services/errorMessage";
-import { ApiParameter } from "@/api/api";
+import getDateIntervalApiParameters from "@/utils/dateIntervalApiParameters";
 
 @Component
 export default class TotalAnalyticComponent extends Vue {
@@ -83,20 +83,10 @@ export default class TotalAnalyticComponent extends Vue {
   getTotalAnalytic() {
     this.totalAnalyticLoading = true;
     userApi
-      .getTotalAnalytic(this.dateIntervalParameters)
+      .getTotalAnalytic(getDateIntervalApiParameters(this.dateInterval))
       .then((response) => (this.totalAnalytic = response.data))
       .catch((error) => this.showSnack(errorMessage.get(error)))
       .finally(() => (this.totalAnalyticLoading = false));
-  }
-
-  get dateIntervalParameters(): ApiParameter[] {
-    if (this.dateInterval.length == 2) {
-      return [
-        { name: "dateGt", value: this.dateInterval[0] },
-        { name: "dateLt", value: this.dateInterval[1] },
-      ];
-    }
-    return [];
   }
 
   @Watch("dateInterval")

@@ -193,6 +193,7 @@ import ChipWithIcon from "@/components/ChipWithIcon.component.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
 import AutocompleteWithIcons from "@/components/AutocompleteWithIcons.component.vue";
 import DateIntervalPicker from "@/components/DateIntervalPicker.component.vue";
+import getDateIntervalApiParameters from "@/utils/dateIntervalApiParameters";
 
 @Component({
   components: {
@@ -364,14 +365,9 @@ export default class Records extends Vue {
     let parameters = [];
 
     if (this.filterValues.dateInterval.length === 2) {
-      parameters.push({
-        name: "dateGt",
-        value: this.filterValues.dateInterval[0],
-      });
-      parameters.push({
-        name: "dateLt",
-        value: this.filterValues.dateInterval[1],
-      });
+      parameters.push(
+        ...getDateIntervalApiParameters(this.filterValues.dateInterval)
+      );
     }
 
     if (
