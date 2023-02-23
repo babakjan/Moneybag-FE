@@ -16,6 +16,13 @@
         <CategoryAnalyticPiChart :date-interval="dateInterval" />
       </v-card>
     </div>
+
+    <!--balance evolution-->
+    <div class="row">
+      <v-card class="full-width">
+        <BalanceEvolution :date-interval="dateInterval" />
+      </v-card>
+    </div>
   </section>
 </template>
 
@@ -24,6 +31,7 @@ import { Component, Vue } from "vue-property-decorator";
 import CategoryAnalyticPiChart from "@/components/analytic/CategoryAnalyticPiChart.component.vue";
 import TotalAnalyticComponent from "@/components/analytic/TotalAnalytic.component.vue";
 import AnalyticIntervalPicker from "@/components/analytic/AnalyticIntervalPicker.component.vue";
+import BalanceEvolution from "@/components/analytic/BalanceEvolution.component.vue";
 import { formatYYYYMMDD } from "@/utils/formatDate";
 
 @Component({
@@ -31,6 +39,7 @@ import { formatYYYYMMDD } from "@/utils/formatDate";
     CategoryAnalyticPiChart,
     TotalAnalyticComponent,
     AnalyticIntervalPicker,
+    BalanceEvolution,
   },
 })
 export default class Analytic extends Vue {
@@ -67,11 +76,17 @@ export default class Analytic extends Vue {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
+  margin-bottom: 2rem;
+  width: 100%;
 }
 
 .card {
   width: 50%;
   height: 400px;
+}
+
+.full-width {
+  width: 100%;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -84,7 +99,7 @@ export default class Analytic extends Vue {
   }
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 600px) {
   .card {
     height: auto;
   }

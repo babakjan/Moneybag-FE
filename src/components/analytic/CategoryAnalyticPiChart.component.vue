@@ -3,7 +3,10 @@
     <h2 v-if="!categoryAnalyticLoading" class="main">Categories</h2>
 
     <!--no date from date interval-->
-    <div class="no-records" v-if="categoryAnalytics.length === 0">
+    <div
+      class="no-records"
+      v-if="!categoryAnalyticLoading && categoryAnalytics.length === 0"
+    >
       No records between {{ formattedDateInterval }}
     </div>
 
@@ -51,10 +54,25 @@ export default class CategoryAnalyticPiChart extends Vue {
           breakpoint: 600,
           options: {
             chart: {
-              width: 370,
+              width: 300,
+              height: 400,
             },
             legend: {
               position: "bottom",
+              width: 300,
+            },
+          },
+        },
+        {
+          breakpoint: 400,
+          options: {
+            chart: {
+              width: 250,
+              height: 400,
+            },
+            legend: {
+              position: "bottom",
+              width: 250,
             },
           },
         },
@@ -120,7 +138,6 @@ export default class CategoryAnalyticPiChart extends Vue {
 .container {
   width: 100%;
   height: 100%;
-  padding: 0 2rem 2rem 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -128,8 +145,8 @@ export default class CategoryAnalyticPiChart extends Vue {
 }
 
 .pi-chart {
-  padding-bottom: 1rem;
   margin: auto;
+  padding: 0 2rem 2rem 2rem;
 }
 
 h2 {

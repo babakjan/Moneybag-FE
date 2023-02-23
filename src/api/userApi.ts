@@ -10,6 +10,12 @@ interface TotalAnalytic {
   currency: string;
 }
 
+//time series entry (chart point)
+interface TimeSeriesEntry {
+  y: number;
+  x: Date;
+}
+
 /**
  * api, which is responsible for requests related to user
  */
@@ -19,7 +25,7 @@ const userApi = {
 
   /**
    * get total analytic of spending
-   * @param parameters parameters
+   * @param parameters parameters, for example date interval
    */
   getTotalAnalytic(
     parameters = [] as ApiParameter[]
@@ -30,7 +36,24 @@ const userApi = {
     }
     return this.API.get(`${this.DOMAIN}/${userId}/totalAnalytic`, parameters);
   },
+
+  /**
+   * Get total balance evolution
+   * @param parameters parameters, for example date interval
+   */
+  getBalanceEvolution(
+    parameters = [] as ApiParameter[]
+  ): Promise<Response<TimeSeriesEntry[]>> {
+    const userId = this.API.getUserId();
+    if (!userId) {
+      return Promise.reject("User id not found, login again.");
+    }
+    return this.API.get(
+      `${this.DOMAIN}/${userId}/balanceEvolution`,
+      parameters
+    );
+  },
 };
 
 export default userApi;
-export { userApi, TotalAnalytic };
+export { userApi, TotalAnalytic, TimeSeriesEntry };
