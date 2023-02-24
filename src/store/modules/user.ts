@@ -28,12 +28,12 @@ const user = {
       state.token = token;
       const expiration = new Date();
       expiration.setDate(expiration.getDate() + 1);
-      localStorage.setItem(
+      sessionStorage.setItem(
         state.expirationStorageKey,
         expiration.toISOString()
       );
-      localStorage.setItem(state.tokenLocalStorageKey, state.token);
-      localStorage.setItem(
+      sessionStorage.setItem(state.tokenLocalStorageKey, state.token);
+      sessionStorage.setItem(
         state.userLocalStorageKey,
         JSON.stringify(state.user)
       );
@@ -42,14 +42,14 @@ const user = {
     logOut: (state: State): void => {
       state.user = null;
       state.token = null;
-      localStorage.removeItem(state.tokenLocalStorageKey);
-      localStorage.removeItem(state.userLocalStorageKey);
+      sessionStorage.removeItem(state.tokenLocalStorageKey);
+      sessionStorage.removeItem(state.userLocalStorageKey);
     },
     //load user and token from local storage
     loadFromLocalStorage(state: State): void {
-      const expiration = localStorage.getItem(state.expirationStorageKey);
-      const token = localStorage.getItem(state.tokenLocalStorageKey);
-      const user = localStorage.getItem(state.userLocalStorageKey);
+      const expiration = sessionStorage.getItem(state.expirationStorageKey);
+      const token = sessionStorage.getItem(state.tokenLocalStorageKey);
+      const user = sessionStorage.getItem(state.userLocalStorageKey);
       if (!expiration || !token || !user) {
         return;
       }
@@ -57,8 +57,8 @@ const user = {
         //token already expired
         state.user = null;
         state.token = null;
-        localStorage.removeItem(state.tokenLocalStorageKey);
-        localStorage.removeItem(state.userLocalStorageKey);
+        sessionStorage.removeItem(state.tokenLocalStorageKey);
+        sessionStorage.removeItem(state.userLocalStorageKey);
         return;
       }
       state.user = JSON.parse(user) as User;
