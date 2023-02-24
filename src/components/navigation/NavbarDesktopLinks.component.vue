@@ -4,7 +4,11 @@
     <ul class="nav-links d-none d-md-flex">
       <li v-for="(link, index) in links" :key="index">
         <span v-if="loggedIn">
-          <router-link :to="link.to" class="white--text">
+          <router-link
+            :to="link.to"
+            class="white--text"
+            :class="$route.path === link.to ? 'font-weight-bold' : ''"
+          >
             {{ link.label }}
           </router-link>
         </span>

@@ -80,11 +80,6 @@ export default class Navbar extends Vue {
       label: "Analytic",
       icon: "mdi-finance",
     },
-    {
-      to: "/export",
-      label: "Export",
-      icon: "mdi-export",
-    },
   ] as NavigationLink[];
 
   //computed
