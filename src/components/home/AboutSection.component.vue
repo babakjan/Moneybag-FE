@@ -25,7 +25,7 @@ export default class AboutSection extends Vue {}
 
 <style scoped>
 section {
-  padding-top: 8rem;
+  padding-top: 7rem;
 }
 
 p {
@@ -38,5 +38,11 @@ h2 {
   font-size: 3rem;
   font-weight: bolder;
   margin-bottom: 1rem;
+}
+
+@media only screen and (max-width: 400px) {
+  section {
+    padding-top: 4rem;
+  }
 }
 </style>

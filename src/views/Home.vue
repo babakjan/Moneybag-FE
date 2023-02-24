@@ -15,9 +15,8 @@
     <!-- about -->
     <AboutSection />
 
-    <div id="contact" style="height: 100vh">
-      <h2 class="pt-16">Contact</h2>
-    </div>
+    <!-- contact -->
+    <ContactSection />
   </section>
 </template>
 
@@ -27,9 +26,10 @@ import Landing from "@/components/home/Landing.component.vue";
 import FeatureCard from "@/components/home/FeatureCard.component.vue";
 import { FeatureCardContent } from "@/components/home/FeatureCard.component.vue";
 import AboutSection from "@/components/home/AboutSection.component.vue";
+import ContactSection from "@/components/home/ContactSection.component.vue";
 
 @Component({
-  components: { Landing, FeatureCard, AboutSection },
+  components: { Landing, FeatureCard, AboutSection, ContactSection },
 })
 export default class Home extends Vue {
   featureCards = [
@@ -71,6 +71,12 @@ export default class Home extends Vue {
 @media only screen and (max-width: 1250px) {
   .cards {
     margin-top: 8rem;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .cards {
+    margin-top: 4rem;
   }
 }
 </style>
