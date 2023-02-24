@@ -1,10 +1,7 @@
 <template>
   <v-navigation-drawer v-model="drawerOpenLocal" app left temporary>
     <v-list nav dense>
-      <v-list-item-group
-        v-model="drawerOpenLocal"
-        active-class="secondary--text text--accent-4"
-      >
+      <v-list-item-group active-class="secondary--text text--accent-4">
         <!-- sign btns -->
         <v-list-item class="mb-4">
           <!--signed in-->
@@ -85,28 +82,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, PropSync } from "vue-property-decorator";
 import { NavigationLink } from "./Navbar.component.vue";
 import { Getter, Mutation } from "vuex-class";
 import { User } from "@/store/modules/user";
 
 @Component
 export default class NavigationDrawer extends Vue {
-  @Prop() drawerOpen: boolean | undefined;
+  @PropSync("drawerOpen", { default: false }) drawerOpenLocal!: boolean;
   @Prop() links: NavigationLink[] | undefined;
 
   @Getter("user/loggedIn") loggedIn!: boolean;
   @Getter("user/user") user!: User | null;
 
   @Mutation("user/logOut") logOut!: () => void;
-
-  get drawerOpenLocal(): boolean {
-    return this.drawerOpen || false;
-  }
-
-  set drawerOpenLocal(value: boolean) {
-    this.$emit("update:drawerOpen", value);
-  }
 }
 </script>
 
