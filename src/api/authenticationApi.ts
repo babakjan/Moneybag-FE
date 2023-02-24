@@ -8,6 +8,7 @@ interface RegisterRequest {
   lastName: string;
   email: string;
   password: string;
+  currency: string;
 }
 
 //authenticate existing user request body

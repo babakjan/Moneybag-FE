@@ -36,6 +36,7 @@
           placeholder="1199"
           hint="Positive numbers are incomes, negative are expenses."
           prepend-icon="mdi-cash"
+          :suffix="currency"
           class="input"
           type="number"
           required
@@ -121,7 +122,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import recordApi, { CreateUpdateRecordRequest } from "@/api/recordApi";
 import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
-import { Action } from "vuex-class";
+import { Action, Getter } from "vuex-class";
 import errorMessage from "@/services/errorMessage";
 import AutocompleteWithIcons from "@/components/inputs/AutocompleteWithIcons.component.vue";
 import { ItemsType } from "@/components/inputs/AutocompleteWithIcons.component.vue";
@@ -171,6 +172,8 @@ export default class CreateUpdateRecord extends Vue {
         value.length <= 128 || "Must be less than 128 characters",
     ],
   };
+
+  @Getter("user/currency") currency: string | undefined;
 
   @Action("snackbar/showSnack") showSnack!: (text: string) => void;
 

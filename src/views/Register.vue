@@ -27,6 +27,17 @@
             required
           />
 
+          <!--currency-->
+          <v-text-field
+            v-model="registerForm.currency"
+            :rules="rules.requiredAndMaxLength"
+            :counter="maxLength"
+            label="Currency"
+            placeholder="EUR"
+            prepend-icon="mdi-currency-eur"
+            required
+          />
+
           <!--email-->
           <v-text-field
             v-model="registerForm.email"
@@ -84,6 +95,7 @@ export default class Register extends Vue {
     lastName: "",
     email: "",
     password: "",
+    currency: "",
   };
 
   formLoading = false;

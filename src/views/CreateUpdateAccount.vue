@@ -43,17 +43,17 @@
           required
         />
 
-        <!--currency-->
+        <!--currency not supported, only information for user, value is taken from user currency-->
         <v-text-field
           v-model="account.currency"
           :rules="rules.requiredAndMaxLength"
           :counter="maxLength"
           :loading="accountLoading"
           label="Currency"
-          placeholder="CZK"
           prepend-icon="mdi-currency-eur"
           class="input"
           required
+          disabled
         />
       </div>
 
@@ -120,7 +120,7 @@ import errorMessage from "@/services/errorMessage";
 import ConfirmationDialog from "@/components/ConfirmationDialog.component.vue";
 import ColorSelect from "@/components/inputs/ColorSelect.component.vue";
 import IconSelect from "@/components/IconSelect.component.vue";
-import { Action } from "vuex-class";
+import { Action, Getter } from "vuex-class";
 
 @Component({
   components: {
@@ -142,11 +142,13 @@ export default class CreateUpdateAccount extends Vue {
   fieldRequiredErrorMsg = "This field is required.";
   showDeleteDialog = false;
 
+  @Getter("user/currency") currency: string | undefined;
+
   account = {
     id: null,
     name: "",
     balance: 0,
-    currency: "CZK",
+    currency: "",
     color: "#6290ff", //blue
     icon: "mdi-piggy-bank-outline",
     includeInStatistic: true,
@@ -179,6 +181,7 @@ export default class CreateUpdateAccount extends Vue {
 
   createdOrActivated(): void {
     if (!this.update) {
+      this.account.currency = this.currency || "";
       return;
     }
     this.accountId = this.$route.params.accountId;

@@ -5,6 +5,7 @@ interface User {
   email: string;
   role: string;
   accountIds: number;
+  currency: string;
 }
 
 class State {
@@ -74,6 +75,9 @@ const user = {
     },
     token: (state: State): string | null => {
       return state.token;
+    },
+    currency: (state: State): string | undefined => {
+      return state.user?.currency;
     },
   },
   actions: {},
