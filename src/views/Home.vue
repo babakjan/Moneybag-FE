@@ -3,6 +3,7 @@
     <!-- landing -->
     <Landing />
 
+    <!-- feature cards -->
     <div class="cards">
       <FeatureCard
         v-for="(featureCard, index) in featureCards"
@@ -11,9 +12,9 @@
       />
     </div>
 
-    <div id="about" style="height: 100vh">
-      <h2 class="pt-16">About</h2>
-    </div>
+    <!-- about -->
+    <AboutSection />
+
     <div id="contact" style="height: 100vh">
       <h2 class="pt-16">Contact</h2>
     </div>
@@ -25,9 +26,10 @@ import { Component, Vue } from "vue-property-decorator";
 import Landing from "@/components/home/Landing.component.vue";
 import FeatureCard from "@/components/home/FeatureCard.component.vue";
 import { FeatureCardContent } from "@/components/home/FeatureCard.component.vue";
+import AboutSection from "@/components/home/AboutSection.component.vue";
 
 @Component({
-  components: { Landing, FeatureCard },
+  components: { Landing, FeatureCard, AboutSection },
 })
 export default class Home extends Vue {
   featureCards = [
@@ -59,10 +61,16 @@ export default class Home extends Vue {
 <style scoped>
 .cards {
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;
   width: 100%;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 5rem;
+  margin-top: 3rem;
+}
+
+@media only screen and (max-width: 1250px) {
+  .cards {
+    margin-top: 8rem;
+  }
 }
 </style>
