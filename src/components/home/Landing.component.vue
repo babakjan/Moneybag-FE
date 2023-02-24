@@ -59,7 +59,6 @@ export default class Landing extends Vue {}
 
 .proposition {
   font-size: 5rem;
-  font-weight: normal;
   line-height: 1.3;
 }
 
@@ -70,7 +69,7 @@ export default class Landing extends Vue {}
 }
 
 .cto {
-  width: 11rem;
+  width: 12rem;
 }
 
 .landing-img {
@@ -115,7 +114,7 @@ export default class Landing extends Vue {}
 
   .details {
     font-size: 1.25rem;
-    margin: 1.5srem auto;
+    margin: 1rem auto;
   }
 
   .landing-img {
@@ -125,7 +124,7 @@ export default class Landing extends Vue {}
   .cto {
     align-self: center;
     justify-self: center;
-    margin: 0 auto;
+    margin: 0 auto 0.5rem auto;
   }
 }
 
@@ -141,6 +140,7 @@ export default class Landing extends Vue {}
 
   .details {
     font-size: 1rem;
+    /* margin-top: ; */
   }
 }
 
@@ -156,9 +156,10 @@ export default class Landing extends Vue {}
   }
 }
 
+/* iphone 6/7/8 Plus */
 @media only screen and (max-width: 420px) and (max-height: 740px) {
   .proposition {
-    font-size: 2rem;
+    font-size: 2.25rem;
   }
 
   .landing-img {
@@ -166,9 +167,17 @@ export default class Landing extends Vue {}
   }
 }
 
+/* iphone SE */
 @media only screen and (max-width: 420px) and (max-height: 700px) {
   .landing-img {
     height: 15rem;
+  }
+}
+
+/* ipad */
+@media only screen and (min-height: 1000px) {
+  .cto {
+    margin-bottom: 8rem;
   }
 }
 </style>
