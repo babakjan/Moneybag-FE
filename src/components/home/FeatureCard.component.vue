@@ -2,7 +2,9 @@
   <v-card class="card">
     <v-card-title>{{ content.title }}</v-card-title>
     <v-card-text>{{ content.text }}</v-card-text>
-    <v-icon x-large class="icon" color="primary">{{ content.icon }}</v-icon>
+    <div class="icon-container">
+      <v-icon x-large class="icon" color="primary">{{ content.icon }}</v-icon>
+    </div>
   </v-card>
 </template>
 
@@ -29,8 +31,13 @@ export { FeatureCardContent };
   width: 25rem;
 }
 
-.icon {
+.icon-container {
   width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.icon {
   padding-bottom: 1rem;
 }
 
