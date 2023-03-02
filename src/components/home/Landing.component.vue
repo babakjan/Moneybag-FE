@@ -140,7 +140,6 @@ export default class Landing extends Vue {}
 
   .details {
     font-size: 1rem;
-    /* margin-top: ; */
   }
 }
 
@@ -160,17 +159,6 @@ export default class Landing extends Vue {}
 @media only screen and (max-width: 420px) and (max-height: 740px) {
   .proposition {
     font-size: 2.25rem;
-  }
-
-  .landing-img {
-    height: 18.5rem;
-  }
-}
-
-/* iphone SE */
-@media only screen and (max-width: 420px) and (max-height: 700px) {
-  .landing-img {
-    height: 15rem;
   }
 }
 
