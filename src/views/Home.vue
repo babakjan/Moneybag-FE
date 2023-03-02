@@ -41,22 +41,22 @@ export default class Home extends Vue {
     {
       title: "Transaction Tracking",
       text:
-        "Track and categorize all your incomes and expenses. Track your spending history " +
-        "Improve your financial health and learn saving money and budgeting.",
+        "Track and categorize all your incomes and expenses. Track your spending history. Improve your financial " +
+        "health and learn to save money and budget.",
       icon: "mdi-cash-multiple",
     },
     {
       title: "Multiple Accounts",
       text:
-        "Create multiple accounts for different purposes like Current account, Saving " +
-        "accounts, Investments, Cash...",
+        "Create multiple accounts for different purposes like Current account, Saving accounts, Investments, and " +
+        "Cash...",
       icon: "mdi-bank-outline",
     },
     {
       title: "Analyze data",
       text:
-        "Analyze financial reports of your incomes, expenses and cashflow. Visualize balance " +
-        "evolution sor spending by category and more...",
+        "Analyze financial reports of your income, expenses, and cashflow. Visualize the balance evolution of spending " +
+        "by category and more...",
       icon: "mdi-finance",
     },
   ] as FeatureCardContent[];

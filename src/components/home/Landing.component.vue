@@ -7,8 +7,8 @@
       <!-- details -->
       <p class="details">
         Get rid of your Exel spreadsheets and start managing your personal
-        finance like a pro. Add records on the go, analyze your incomes and
-        expenses and more...
+        finance like a pro. Add records on the go, analyze your income and
+        expenses, and more...
       </p>
 
       <!-- call to action -->

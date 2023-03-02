@@ -40,26 +40,85 @@ export default class ColorSelect extends Vue {
   @Prop({ default: "Color" }) label!: string;
 
   colors = [
-    //TODO add more
     {
-      text: "Green",
-      value: "#388E3C",
+      text: "Light Green",
+      value: "#6bff01",
     },
     {
-      text: "Orange",
-      value: "#FFAB00",
+      text: "Darker Green",
+      value: "#50bf01",
     },
     {
-      text: "Purple",
-      value: "#6200EA",
+      text: "Pink",
+      value: "#ff5379",
+    },
+    {
+      text: "Red",
+      value: "#ff4638",
+    },
+    {
+      text: "Dark Red",
+      value: "#cf392d",
+    },
+    {
+      text: "Bordeaux",
+      value: "#b53227",
+    },
+    {
+      text: "Darker Bordeaux",
+      value: "#9e2c22",
+    },
+    {
+      text: "Beige",
+      value: "#d59687",
+    },
+    {
+      text: "Light Purple",
+      value: "#f077ff",
+    },
+    {
+      text: "Dark Purple",
+      value: "#b85bc3",
+    },
+    {
+      text: "Light Blue",
+      value: "#94bdff",
     },
     {
       text: "Blue",
       value: "#6290ff",
     },
     {
-      text: "Red",
-      value: "#F44336",
+      text: "Darker Blue",
+      value: "#547de0",
+    },
+    {
+      text: "Deep Blue",
+      value: "#325bff",
+    },
+    {
+      text: "Dark Blue",
+      value: "#294acf",
+    },
+    {
+      text: "Orange",
+      value: "#FFAB00",
+    },
+    {
+      text: "Yellow",
+      value: "#ffc100",
+    },
+    {
+      text: "Cyan",
+      value: "#46ffff",
+    },
+    {
+      text: "Light blue 2",
+      value: "#6290ff",
+    },
+    {
+      text: "Black",
+      value: "#070513",
     },
   ];
 }
