@@ -33,6 +33,14 @@ First, I created a list of all the requirements, chose the necessary technologie
 
 I developed the front end as a SPA using the Vue.js framework using TypeScript instead of JavaScript for convenience and using the Vuetify component library. I used the Axios library for communication with the API and the Apex charts library for chart rendering. I also set up an automatic on GitHub using GitHub actions.
 
+## 🚀 Features
+
+- Multiple financial accounts
+- Add records and categorize them
+- Analytic of categories, incomes, expenses, cash flow...
+- Charts
+- Responsive web interface
+
 ## 🧑‍🔬 Technologies
 
 - [Vue.js](https://vuejs.org)
