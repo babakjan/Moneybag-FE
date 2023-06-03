@@ -12,26 +12,33 @@
 
 ## 📝 Description
 
-Moneybag is a **web application** used to manage **personal finance**. Users can have several accounts. They can create and categorize their records and then analyze their income and expenses.
+Moneybag is a tool for **managing personal finances** that allows users to create and categorize records, analyze income
+and expenses, and manage multiple accounts.
 
-The application consists of a **separate backend and frontend**, which are connected via a **REST API**. The backend is written in Java using the Spring framework and uses a MySql database for data persistence. The frontend is a **single-page application** written in TypeScript and the Vue.js and Vuetify frameworks.
+The backend was written in **Java** using the **Spring framework** and uses a MySql database for data persistence. The
+frontend is a single-page application connected via REST API and built with TypeScript, **Vue.js**, and Vuetify.
 
 ## 🔗 Links
 
 - [📺 Video example](https://www.youtube.com/watch?v=rzZ-Xvy9iwY)
 - [💅 Backend repo](https://github.com/janbabak/Moneybag-BE)
-- [📯 API documentation (Post man)](https://documenter.getpostman.com/view/131905572s93CRKWwv#b9ffcedf-337f-4546-8095-5740e9047e96)
+- [📯 API documentation (Post man)](https://documenter.getpostman.com/view/13190557/2s93CRKWwv)
 - [📄 API documentation (Swagger)](https://janbabak.github.io/Moneybag-BE/)
 
 ## ⚽️ Project Goals
 
-There were several reasons why I created this project. First of all, I wanted to try different technologies. Secondly, I wanted to try all stages of a software development cycle. And I also wanted to add some work to my portfolio, which can showcase my development skills.
+I created this project for several reasons. Firstly, I wanted to **experiment with various technologies**. Secondly, I
+aimed to experience all stages of the software development cycle. Additionally, I intended to add work to my portfolio
+that would demonstrate my development skills.
 
 ## 🏗️ Realization
 
-First, I created a list of all the requirements, chose the necessary technologies, and then started developing the backend server.
+First, I created a list of all the requirements, chose the necessary technologies, and then started developing the
+backend server.
 
-I developed the front end as a SPA using the Vue.js framework using TypeScript instead of JavaScript for convenience and using the Vuetify component library. I used the Axios library for communication with the API and the Apex charts library for chart rendering. I also set up an automatic on GitHub using GitHub actions.
+I developed the front end as a SPA using the Vue.js framework using TypeScript instead of JavaScript for convenience and
+using the Vuetify component library. I used the Axios library for communication with the API and the Apex charts library
+for chart rendering. I also set up an automatic on GitHub using GitHub actions.
 
 ## 🚀 Features
 
