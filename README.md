@@ -20,6 +20,7 @@ frontend is a single-page application connected via REST API and built with Type
 
 ## 🔗 Links
 
+- [🌐 Live](https://aws.dkk8cbmf1rlz.amplifyapp.com/login)
 - [📺 Video example](https://www.youtube.com/watch?v=rzZ-Xvy9iwY)
 - [💅 Backend repo](https://github.com/janbabak/Moneybag-BE)
 - [📯 API documentation (Post man)](https://documenter.getpostman.com/view/13190557/2s93CRKWwv)
